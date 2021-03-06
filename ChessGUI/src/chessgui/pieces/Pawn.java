@@ -96,7 +96,7 @@ public class Pawn extends Piece {
     	    	}	
     		}	
     	}
-    	
+    	 
     	
     	/*if((Pawn.this.isWhite()) & (destination_y == getYValue()+1)) {
     		
