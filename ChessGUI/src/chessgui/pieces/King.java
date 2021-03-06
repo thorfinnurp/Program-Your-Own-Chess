@@ -3,6 +3,9 @@ package chessgui.pieces;
 import chessgui.Board;
 
 public class King extends Piece {
+	private int diffY;
+	private int diffX;
+	private Piece p;
 
     public King(int x, int y, boolean is_white, String file_path, Board board)
     {
@@ -17,8 +20,22 @@ public class King extends Piece {
         // piece attacking him on the next turn. He cannot attack his own pieces.
         
                 // WRITE CODE HERE
-
+    	
+    	diffX = getX() - destination_x;
+    	diffY = getY() - destination_y;
+    	
+    	p = King.this.board.getPiece(destination_x, destination_y);
+		
+		if((p == null) || (p.isWhite() != isWhite()) || (p.isBlack() != isBlack()))
+		{
+	    	if(((diffY < 2) && (diffY > -2)) && ((diffX < 2) && (diffX > -2)))
+	    	{
+	    		return true;
+	    	}
+		}
         
-        return true;
+        return false;
     }
+    
+    
 }

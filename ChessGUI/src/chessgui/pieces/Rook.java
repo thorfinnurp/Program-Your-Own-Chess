@@ -3,6 +3,8 @@ package chessgui.pieces;
 import chessgui.Board;
 
 public class Rook extends Piece {
+	private Piece p;
+	
 
     public Rook(int x, int y, boolean is_white, String file_path, Board board)
     {
@@ -18,7 +20,86 @@ public class Rook extends Piece {
         
                 // WRITE CODE HERE
         
+    	p = Rook.this.board.getPiece(destination_x, destination_y);
+		
+		if((p == null) || (p.isWhite() != isWhite()) || (p.isBlack() != isBlack()))
+    	if ((DestOK(destination_x, destination_y, Rook.this.getX(), Rook.this.getY()) == true))
+    	{
+    		if(PathOK(destination_x, destination_y, Rook.this.getX(), Rook.this.getY()) == true)
+    		{
+    			return true;
+    		}
+    	}	
         
-        return true;
+        return false;
+    }
+    
+    public boolean DestOK(int x,int y, int destination_x, int destination_y)
+    {
+    	if((x == destination_x) || (y == destination_y))
+    	{
+    		System.out.println("Dest OK");
+    		return true;
+    	}
+    	
+    	return false;
+    }
+    
+    
+    
+    public boolean PathOK(int x, int y, int currX, int currY)
+    {
+    	
+    	
+    	if(x > currX && y == currY)
+    	{
+    		if(currX + 1 == x) 
+    		{
+    			return true;
+    		}
+    		if(Rook.this.board.getPiece(currX + 1, currY) == null)
+    		{
+    			return PathOK(x, y, currX + 1, currY);
+    		}
+    		
+    	}
+    	else if((x < currX) && (y == currY))
+    	{
+    		if(currX - 1 == x) 
+    		{
+    			return true;
+    		}
+    		if(Rook.this.board.getPiece(currX - 1, currY) == null)
+    		{
+    			return PathOK(x, y, currX - 1, currY);
+    		}
+    		//return PathOK(x, y, currX - 1, currY);
+    	}
+    	else if((x == currX) && (y > currY))
+    	{
+    		if(currY + 1 == y) 
+    		{
+    			return true;
+    		}
+    		if(Rook.this.board.getPiece(currX, currY + 1) == null)
+    		{
+    			return PathOK(x, y, currX, currY + 1);
+    		}
+    		//return PathOK(x, y, currX, currY + 1);
+    	}
+    	else if((x == currX) && (y < currY))
+    	{
+    		if(currY - 1 == y) 
+    		{
+    			return true;
+    		}
+    		if(Rook.this.board.getPiece(currX, currY - 1) == null)
+    		{
+    			return PathOK(x, y, currX, currY - 1);
+    		}
+    		//return PathOK(x, y, currX, currY -1);
+    	}
+    	
+    	return false;
     }
 }
