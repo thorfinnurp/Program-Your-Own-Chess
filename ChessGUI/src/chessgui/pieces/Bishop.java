@@ -31,8 +31,8 @@ public class Bishop extends Piece {
         // piece. He cannot attack his own pieces.
         
                 // WRITE CODE HERE
-    	System.out.println("Current pos xy: " + getXValue() + getYValue());
-    	System.out.println("Dest pos xy: " + destination_x + destination_y);
+    	//System.out.println("Current pos xy: " + getXValue() + getYValue());
+    	//System.out.println("Dest pos xy: " + destination_x + destination_y);
     	
     	if(calcMove(destination_x, destination_y,getXValue(),getYValue()) == true)
     	{
@@ -42,18 +42,18 @@ public class Bishop extends Piece {
     		{
 	    		if(PathOK(destination_x, destination_y,getXValue(),getYValue()) == true)
 	    		{
-	    			System.out.println("Path OK!!!");
+	    		//	System.out.println("Path OK!!!");
 	    			return true;	    			
 	    		}
 	    		else
 	    		{
-	    			System.out.println("Dest OK Path Not!");
+	    		//	System.out.println("Dest OK Path Not!");
 	    			return false;
 	    		}
     		}
     	}
     	
-    	System.out.println("False!");
+    	//System.out.println("Bishop False!");
         return false;
     }
     

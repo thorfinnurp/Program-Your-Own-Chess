@@ -56,7 +56,7 @@ public class Pawn extends Piece {
 		    	
 		    		if((destination_y == getYValue() + 1) || (destination_y == getYValue() + 2))
 		    		{
-		    			System.out.println("white True!"); 
+		    			//System.out.println("white True!"); 
 		        		return true;
 		    		}
 		    	}
@@ -64,7 +64,7 @@ public class Pawn extends Piece {
 		    		
 		    		if((destination_y == getYValue() - 1) || (destination_y == getYValue() - 2))
 		    		{
-		    			System.out.println("Black True!"); 
+		    			//System.out.println("Black True!"); 
 		        		return true;
 		    		}
 		    		
@@ -78,7 +78,7 @@ public class Pawn extends Piece {
     			
     			if(p.isBlack() == Pawn.this.isWhite())
     	    	{
-    	    		System.out.println("W - Licence to Kill!");
+    	    		//System.out.println("W - Licence to Kill!");
     	    		return true;
     	    	}
     			
@@ -91,7 +91,7 @@ public class Pawn extends Piece {
     		{
     			if(p.isBlack() == Pawn.this.isWhite())
     	    	{
-    	    		System.out.println("B - Licence to Kill!");
+    	    		//System.out.println("B - Licence to Kill!");
     	    		return true;
     	    	}	
     		}	
@@ -104,10 +104,11 @@ public class Pawn extends Piece {
     		return true;
     	}*/
     	
-    	System.out.println("Current pos xy: " + getXValue() + getYValue());
-    	System.out.println("Dest pos xy: " + destination_x + destination_y);
+    	//System.out.println("Current pos xy: " + getXValue() + getYValue());
+    	//System.out.println("Dest pos xy: " + destination_x + destination_y);
                 
-    	System.out.println("Wrong!");       
+    	//System.out.println("Wrong!");
+    	//System.out.println("Bishop False!");
         return false;
     }
 }

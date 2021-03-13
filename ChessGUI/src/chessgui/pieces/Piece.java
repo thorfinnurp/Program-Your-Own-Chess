@@ -18,6 +18,11 @@ public class Piece {
         this.board = board;
     }
     
+    public boolean hasMoved()
+    {
+    	return false;
+    }
+    
     public String getFilePath()
     {
         return file_path;

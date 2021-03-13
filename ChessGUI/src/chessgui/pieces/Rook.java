@@ -4,6 +4,7 @@ import chessgui.Board;
 
 public class Rook extends Piece {
 	private Piece p;
+	private boolean hasMoved;
 	
 
     public Rook(int x, int y, boolean is_white, String file_path, Board board)
@@ -11,6 +12,11 @@ public class Rook extends Piece {
         super(x,y,is_white,file_path, board);
     }
     
+    public boolean hasMoved()
+    {
+    	//System.out.println("HasMoved from ROOOK! " + hasMoved);
+    	return hasMoved;
+    }
     @Override
     public boolean canMove(int destination_x, int destination_y)
     {
@@ -27,10 +33,12 @@ public class Rook extends Piece {
     	{
     		if(PathOK(destination_x, destination_y, Rook.this.getX(), Rook.this.getY()) == true)
     		{
+    			//Lika notað í að tékka á skák, þarf að laga.
+    			hasMoved = true;
     			return true;
     		}
     	}	
-        
+		//System.out.println("ROOK False!");
         return false;
     }
     
@@ -38,7 +46,7 @@ public class Rook extends Piece {
     {
     	if((x == destination_x) || (y == destination_y))
     	{
-    		System.out.println("Dest OK");
+    		//System.out.println("Dest OK");
     		return true;
     	}
     	

@@ -44,6 +44,7 @@ public class Queen extends Piece {
     		}
     		
 		}
+    	//System.out.println("Queen False!");
         return false;
     }
     
@@ -53,7 +54,7 @@ public class Queen extends Piece {
     {
     	if((x == destination_x) || (y == destination_y))
     	{
-    		System.out.println("Dest OK");
+    		//System.out.println("Dest OK");
     		return true;
     	}
     	

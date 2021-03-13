@@ -66,11 +66,11 @@ public class Knight extends Piece {
     	
     	
     	
-    	System.out.println("Current pos xy: " + getXValue() + getYValue());
-    	System.out.println("Dest pos xy: " + destination_x + destination_y);
+    	//System.out.println("Current pos xy: " + getXValue() + getYValue());
+    	//System.out.println("Dest pos xy: " + destination_x + destination_y);
                 
-    	System.out.println("Wrong!");       
-        
+    	//System.out.println("Wrong!");       
+    	//System.out.println("Knight False!");
         return false;
     }
     
