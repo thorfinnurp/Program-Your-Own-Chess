@@ -1,5 +1,7 @@
 package chessgui.pieces;
 
+import java.util.ArrayList;
+
 import chessgui.Board;
 
 public class Bishop extends Piece {
@@ -7,6 +9,13 @@ public class Bishop extends Piece {
 	private int diffX;
 	private int diffY;
 	private Piece p;
+	
+	private int currPosX;
+	private int currPosY;
+	
+	public ArrayList<Piece> White_Pieces;
+    public ArrayList<Piece> Black_Pieces;
+    
     public Bishop(int x, int y, boolean is_white, String file_path, Board board)
     {
         super(x,y,is_white,file_path, board);
@@ -15,24 +24,51 @@ public class Bishop extends Piece {
     
     public int getXValue()
     {
-    	return Bishop.this.getX();
+    	return getX();
     }
     public int getYValue()
     {
-    	return Bishop.this.getY();
+    	return getY();
     }
     
+    
+    public boolean isKingChecked()
+    {
+    	White_Pieces = board.getWhitePieces();
+    	Black_Pieces = board.getBlackPieces();
+    	if(isWhite())
+    	{
+    		//System.out.println("IsWhite");
+    		if (White_Pieces.get(0).isKing() == true)
+    		{
+    			//System.out.println("King found");
+    			if(White_Pieces.get(0).isCheckmate() == true)
+    			{
+    				return true;
+    			}
+    		} 	
+    	}
+    	else
+    	{
+    		if (Black_Pieces.get(0).isKing() == true)
+    		{
+    			System.out.println("King found");
+    			if(Black_Pieces.get(0).isCheckmate() == true)
+    			{
+    				return true;
+    			}
+    		}	
+    	}
+    	return false;
+    }
     
     @Override
     public boolean canMove(int destination_x, int destination_y)
     {
-        // Remember: For attacking or just moving, a bishop is allowed to move 
-        // as many squares diagonally as it wants without jumping over another 
-        // piece. He cannot attack his own pieces.
-        
-                // WRITE CODE HERE
-    	//System.out.println("Current pos xy: " + getXValue() + getYValue());
-    	//System.out.println("Dest pos xy: " + destination_x + destination_y);
+    	
+    	//if p.board.White_Pieces
+    	currPosY = getYValue();
+    	currPosX = getXValue();
     	
     	if(calcMove(destination_x, destination_y,getXValue(),getYValue()) == true)
     	{
@@ -42,7 +78,21 @@ public class Bishop extends Piece {
     		{
 	    		if(PathOK(destination_x, destination_y,getXValue(),getYValue()) == true)
 	    		{
-	    		//	System.out.println("Path OK!!!");
+	    			//Bishop.this.setX(destination_x);
+	        		//Bishop.this.setY(destination_y);
+	        		setX(destination_x);
+	        		setY(destination_y);
+	        		if(isKingChecked() == true)
+	        		{
+	        			setX(currPosX);
+		        		setY(currPosY);
+	        			System.out.println("false");
+	        			return false;
+	        		}
+	        		setX(currPosX);
+	        		setY(currPosY);
+	        		
+	    			System.out.println("true");
 	    			return true;	    			
 	    		}
 	    		else
@@ -56,6 +106,8 @@ public class Bishop extends Piece {
     	//System.out.println("Bishop False!");
         return false;
     }
+    
+    
     
     //recursive spaghetti sem virkar?
     public boolean PathOK(int x, int y, int currX, int currY)

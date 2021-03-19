@@ -1,15 +1,55 @@
 package chessgui.pieces;
 
+import java.util.ArrayList;
+
 import chessgui.Board;
 
 public class Rook extends Piece {
 	private Piece p;
 	private boolean hasMoved;
+	public ArrayList<Piece> White_Pieces;
+    public ArrayList<Piece> Black_Pieces;
+    
+	private int currPosX;
+	private int currPosY;
 	
+
 
     public Rook(int x, int y, boolean is_white, String file_path, Board board)
     {
         super(x,y,is_white,file_path, board);
+    }
+    
+    
+    public boolean isKingChecked()
+    {
+    	White_Pieces = board.getWhitePieces();
+    	Black_Pieces = board.getBlackPieces();
+    	if(isWhite())
+    	{
+    		//System.out.println("IsWhite");
+    		if (White_Pieces.get(0).isKing() == true)
+    		{
+    			//System.out.println("King found");
+    			if(White_Pieces.get(0).isCheckmate() == true)
+    			{
+    				return true;
+    			}
+    		} 	
+    	}
+    	else
+    	{
+    		if (Black_Pieces.get(0).isKing() == true)
+    		{
+    			System.out.println("King found");
+    			if(Black_Pieces.get(0).isCheckmate() == true)
+    			{
+    				
+    				return true;
+    			}
+    		}	
+    	}
+    	return false;
     }
     
     public boolean hasMoved()
@@ -17,14 +57,18 @@ public class Rook extends Piece {
     	//System.out.println("HasMoved from ROOOK! " + hasMoved);
     	return hasMoved;
     }
+    
+    @Override
+    public boolean isKing()
+    {
+    	return false;
+    }
+    
     @Override
     public boolean canMove(int destination_x, int destination_y)
     {
-        // Remember: A rook can move as many squares as he wants either forward,
-        // backward, or sideways without jumping any pieces. He cannot attack
-        // his own pieces.
-        
-                // WRITE CODE HERE
+    	currPosY = this.getY();
+    	currPosX = this.getX();
         
     	p = Rook.this.board.getPiece(destination_x, destination_y);
 		
@@ -34,11 +78,26 @@ public class Rook extends Piece {
     		if(PathOK(destination_x, destination_y, Rook.this.getX(), Rook.this.getY()) == true)
     		{
     			//Lika notað í að tékka á skák, þarf að laga.
+    			setX(destination_x);
+        		setY(destination_y);
+        		if(isKingChecked() == true)
+        		{
+        			setX(currPosX);
+	        		setY(currPosY);
+        			System.out.println("false");
+        			return false;
+        		}
+        		setX(currPosX);
+        		setY(currPosY);
+        		
+    			System.out.println("true");
+    		
     			hasMoved = true;
+    			
+    			
     			return true;
     		}
     	}	
-		//System.out.println("ROOK False!");
         return false;
     }
     

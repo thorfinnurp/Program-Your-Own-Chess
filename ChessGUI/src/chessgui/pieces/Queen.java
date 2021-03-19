@@ -1,5 +1,7 @@
 package chessgui.pieces;
 
+import java.util.ArrayList;
+
 import chessgui.Board;
 
 public class Queen extends Piece {
@@ -7,9 +9,46 @@ public class Queen extends Piece {
 	private Piece p;
 	private int diffX;
 	private int diffY;
+	
+	public ArrayList<Piece> White_Pieces;
+    public ArrayList<Piece> Black_Pieces;
+	private int currPosX;
+	private int currPosY;
+	
+	
     public Queen(int x, int y, boolean is_white, String file_path, Board board)
     {
         super(x,y,is_white,file_path, board);
+    }
+    
+    public boolean isKingChecked()
+    {
+    	White_Pieces = board.getWhitePieces();
+    	Black_Pieces = board.getBlackPieces();
+    	if(isWhite())
+    	{
+    		//System.out.println("IsWhite");
+    		if (White_Pieces.get(0).isKing() == true)
+    		{
+    			//System.out.println("King found");
+    			if(White_Pieces.get(0).isCheckmate() == true)
+    			{
+    				return true;
+    			}
+    		} 	
+    	}
+    	else
+    	{
+    		if (Black_Pieces.get(0).isKing() == true)
+    		{
+    			System.out.println("King found");
+    			if(Black_Pieces.get(0).isCheckmate() == true)
+    			{
+    				return true;
+    			}
+    		}	
+    	}
+    	return false;
     }
     
     @Override
@@ -21,7 +60,8 @@ public class Queen extends Piece {
         // She cannot attack her own pieces.
         
                 // WRITE CODE HERE
-    	
+    	currPosY = this.getY();
+    	currPosX = this.getX();
     	p = Queen.this.board.getPiece(destination_x, destination_y);
 
     	if((p == null) || (p.isWhite() != isWhite()) || (p.isBlack() != isBlack()))
@@ -31,6 +71,17 @@ public class Queen extends Piece {
     		{
     			if (PathOKBishop(destination_x, destination_y, getX(), getY()))
     			{
+    				setX(destination_x);
+	        		setY(destination_y);
+	        		if(isKingChecked() == true)
+	        		{
+	        			setX(currPosX);
+		        		setY(currPosY);
+	        			System.out.println("false");
+	        			return false;
+	        		}
+	        		setX(currPosX);
+	        		setY(currPosY);
     				return true;
     			}
     			
@@ -39,6 +90,17 @@ public class Queen extends Piece {
     		{
     			if (PathOKRook(destination_x, destination_y, getX(), getY()))
     			{
+    				setX(destination_x);
+	        		setY(destination_y);
+	        		if(isKingChecked() == true)
+	        		{
+	        			setX(currPosX);
+		        		setY(currPosY);
+	        			System.out.println("Qfalse");
+	        			return false;
+	        		}
+	        		setX(currPosX);
+	        		setY(currPosY);
     				return true;
     			}
     		}
@@ -79,6 +141,12 @@ public class Queen extends Piece {
     		return true;
     	}
     	
+    	return false;
+    }
+    
+    @Override
+    public boolean isKing()
+    {
     	return false;
     }
     

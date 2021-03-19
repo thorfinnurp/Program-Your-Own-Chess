@@ -63,6 +63,16 @@ public class Piece {
         return y;
     }
     
+    public boolean isKing()
+    {
+    	return false;
+    }
+    
+    public boolean isCheckmate()
+    {
+    	return false;
+    }
+    
     public boolean canMove(int destination_x, int destination_y)
     {
         return false;

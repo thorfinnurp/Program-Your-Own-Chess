@@ -21,14 +21,26 @@ public class King extends Piece {
     }
     
     @Override
-    public boolean canMove(int destination_x, int destination_y)
+    public boolean isKing()
     {
-        // Remember: a king can move one square up, right, left, or down, or
-        // diagonally, but he can never put himself in danger of an oposing 
-        // piece attacking him on the next turn. He cannot attack his own pieces.
-        
-                // WRITE CODE HEre
-    	
+    	//System.out.println("Is King");
+    	return true;
+    }
+    
+    @Override
+    public boolean isCheckmate()
+    {
+    	if(isChecked() == true)
+    	{
+    		return true;
+    	}
+    	return false;
+    }
+    
+   
+    @Override
+    public boolean canMove(int destination_x, int destination_y)
+    {	
     	if(isCheckMate())
     	{
     		return false;
@@ -180,7 +192,6 @@ public class King extends Piece {
     	{
     		return false;
     	}
-    	
     	return true;
     }
     
@@ -201,8 +212,6 @@ public class King extends Piece {
     		}
     		
     	}
-    	
-    	
     	if((getX() - 1 >= 0 ) && (getY() - 1 >= 0))
     	{
     		if(check(getX() - 1, getY() - 1))
@@ -211,7 +220,6 @@ public class King extends Piece {
     	    	return false;
     		}
     	}
-    	
     	if((getX() - 1 >= 0 ) && (getY()+1 <= 7))
     	{
     		if(check(getX() - 1, getY() + 1))
@@ -260,21 +268,15 @@ public class King extends Piece {
     	    	return false;
     		}
     	}
-    	
-    	
     	return true;
     }
     
     //check if King can move to destination
     public boolean check(int destination_x, int destination_y)
     {
-    	
     	if(isBlack())
     	{
-    		
-    		
 	    	White_Pieces = King.this.board.getWhitePieces();
-	    	 
 	    	for(int i = 1; i < White_Pieces.size(); i++)
 	    	{
 	    		if(White_Pieces.get(i).canMove(destination_x, destination_y) == true)
@@ -285,25 +287,15 @@ public class King extends Piece {
     	}
     	else
     	{
-    		
     		Black_Pieces = King.this.board.getBlackPieces();
-	    	 
-        	//System.out.println("Black Size: " + Black_Pieces.size());
-
 	    	for(int i = 1; i < Black_Pieces.size(); i++)
 	    	{
-	    		//System.out.println("pice: " + Black_Pieces.get(i).toString());
-	    		//System.out.println("i: " + i);
-	    		
 	    		if(Black_Pieces.get(i).canMove(destination_x, destination_y) == true)
 	    		{
 	    			return false;
 	    		}
 	    	}
-    		
     	}
     	return true;
-    }
-    
-    
+    }  
 }

@@ -1,5 +1,7 @@
 package chessgui.pieces;
 
+import java.util.ArrayList;
+
 import chessgui.Board;
 
 public class Pawn extends Piece {
@@ -7,6 +9,11 @@ public class Pawn extends Piece {
     private boolean has_moved;
     
     private Piece p;
+	public ArrayList<Piece> White_Pieces;
+    public ArrayList<Piece> Black_Pieces;
+    
+	private int currPosX;
+	private int currPosY;
     
     public Pawn(int x, int y, boolean is_white, String file_path, Board board)
     {
@@ -31,6 +38,37 @@ public class Pawn extends Piece {
     {
     	return Pawn.this.getY();
     }
+    
+    public boolean isKingChecked()
+    {
+    	White_Pieces = board.getWhitePieces();
+    	Black_Pieces = board.getBlackPieces();
+    	if(isWhite())
+    	{
+    		//System.out.println("IsWhite");
+    		if (White_Pieces.get(0).isKing() == true)
+    		{
+    			//System.out.println("King found");
+    			if(White_Pieces.get(0).isCheckmate() == true)
+    			{
+    				return true;
+    			}
+    		} 	
+    	}
+    	else
+    	{
+    		if (Black_Pieces.get(0).isKing() == true)
+    		{
+    			System.out.println("King found");
+    			if(Black_Pieces.get(0).isCheckmate() == true)
+    			{
+    				
+    				return true;
+    			}
+    		}	
+    	}
+    	return false;
+    }
    
     
     @Override
@@ -44,8 +82,10 @@ public class Pawn extends Piece {
 
                 // WRITE CODE HERE
     	
-    	
+    	currPosY = getY();
+    	currPosX = getX();
     	p = Pawn.this.board.getPiece(destination_x, destination_y);
+    
     	
     	if(p == null) 
     	{
@@ -57,6 +97,20 @@ public class Pawn extends Piece {
 		    		if((destination_y == getYValue() + 1) || (destination_y == getYValue() + 2))
 		    		{
 		    			//System.out.println("white True!"); 
+		    			setX(destination_x);
+		        		setY(destination_y);
+		        		if(isKingChecked() == true)
+		        		{
+		        			setX(currPosX);
+			        		setY(currPosY);
+		        			System.out.println("false");
+		        			return false;
+		        		}
+		        		setX(currPosX);
+		        		setY(currPosY);
+		        		
+		    			System.out.println("true");
+		    			
 		        		return true;
 		    		}
 		    	}
@@ -65,6 +119,19 @@ public class Pawn extends Piece {
 		    		if((destination_y == getYValue() - 1) || (destination_y == getYValue() - 2))
 		    		{
 		    			//System.out.println("Black True!"); 
+		    			setX(destination_x);
+		        		setY(destination_y);
+		        		if(isKingChecked() == true)
+		        		{
+		        			setX(currPosX);
+			        		setY(currPosY);
+		        			System.out.println("false");
+		        			return false;
+		        		}
+		        		setX(currPosX);
+		        		setY(currPosY);
+		        		
+		    			System.out.println("true");
 		        		return true;
 		    		}
 		    		
@@ -79,11 +146,22 @@ public class Pawn extends Piece {
     			if(p.isBlack() == Pawn.this.isWhite())
     	    	{
     	    		//System.out.println("W - Licence to Kill!");
+    				setX(destination_x);
+	        		setY(destination_y);
+	        		if(isKingChecked() == true)
+	        		{
+	        			setX(currPosX);
+		        		setY(currPosY);
+	        			System.out.println("false");
+	        			return false;
+	        		}
+	        		setX(currPosX);
+	        		setY(currPosY);
+	        		
+	    			System.out.println("true");
     	    		return true;
     	    	}
-    			
     		}
-    
     	}
     	else
     	{
@@ -92,23 +170,28 @@ public class Pawn extends Piece {
     			if(p.isBlack() == Pawn.this.isWhite())
     	    	{
     	    		//System.out.println("B - Licence to Kill!");
+    				setX(destination_x);
+	        		setY(destination_y);
+	        		if(isKingChecked() == true)
+	        		{
+	        			setX(currPosX);
+		        		setY(currPosY);
+	        			System.out.println("false");
+	        			return false;
+	        		}
+	        		setX(currPosX);
+	        		setY(currPosY);
+	        		
+	    			System.out.println("true");
     	    		return true;
     	    	}	
     		}	
     	}
-    	 
-    	
     	/*if((Pawn.this.isWhite()) & (destination_y == getYValue()+1)) {
     		
     		System.out.println("True"); 
     		return true;
     	}*/
-    	
-    	//System.out.println("Current pos xy: " + getXValue() + getYValue());
-    	//System.out.println("Dest pos xy: " + destination_x + destination_y);
-                
-    	//System.out.println("Wrong!");
-    	//System.out.println("Bishop False!");
         return false;
     }
 }

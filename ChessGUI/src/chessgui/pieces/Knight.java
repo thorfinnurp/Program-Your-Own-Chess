@@ -1,17 +1,22 @@
 package chessgui.pieces;
 
+import java.util.ArrayList;
+
 import chessgui.Board;
 
 public class Knight extends Piece {
 	
 	private Piece p;
+	private int currPosX;
+	private int currPosY;
+	public ArrayList<Piece> White_Pieces;
+    public ArrayList<Piece> Black_Pieces;
+    
 
     public Knight(int x, int y, boolean is_white, String file_path, Board board)
     {
         super(x,y,is_white,file_path, board);
     }
-    
-    
     public int getXValue()
     {
     	return Knight.this.getX();
@@ -21,22 +26,41 @@ public class Knight extends Piece {
     	return Knight.this.getY();
     }
     
+    public boolean isKingChecked()
+    {
+    	White_Pieces = board.getWhitePieces();
+    	Black_Pieces = board.getBlackPieces();
+    	if(isWhite())
+    	{
+    		//System.out.println("IsWhite");
+    		if (White_Pieces.get(0).isKing() == true)
+    		{
+    			//System.out.println("King found");
+    			if(White_Pieces.get(0).isCheckmate() == true)
+    			{
+    				return true;
+    			}
+    		} 	
+    	}
+    	else
+    	{
+    		if (Black_Pieces.get(0).isKing() == true)
+    		{
+    			//System.out.println("King found");
+    			if(Black_Pieces.get(0).isCheckmate() == true)
+    			{
+    				return true;
+    			}
+    		}	
+    	}
+    	return false;
+    }
+    
     @Override
     public boolean canMove(int destination_x, int destination_y)
     {
-        // Remember: a knight can move in any L shape and can jump over anyone
-        // in order to do so. He cannot attack his own pieces.
-        // By an L shape, I mean it can move to a square that is 2 squares away
-        // horizontally and 1 square away vertically, or 1 square away horizontally
-        // and 2 squares away vertically.
-        // some examples:
-        //
-        //  * *       * * *           *       *
-        //  *             *       * * *       *
-        //  *                                 * *
-            
-                // WRITE CODE HERE
-    	
+    	currPosY = getY();
+    	currPosX = getX();
     	p = Knight.this.board.getPiece(destination_x, destination_y);
     	
     	if(Knight.this.isWhite())
@@ -45,6 +69,19 @@ public class Knight extends Piece {
     		{
     			if((p == null)||(p.isBlack() == true))
     			{
+    				setX(destination_x);
+	        		setY(destination_y);
+	        		if(isKingChecked() == true)
+	        		{
+	        			setX(currPosX);
+		        		setY(currPosY);
+	        			System.out.println("Knight false");
+	        			return false;
+	        		}
+	        		setX(currPosX);
+	        		setY(currPosY);
+	        		
+	    			System.out.println("Knight true");
     				return true;
     			}
     		}
@@ -55,22 +92,24 @@ public class Knight extends Piece {
     		{
     			if((p == null)||(p.isWhite() == true))
     			{
+    				setX(destination_x);
+	        		setY(destination_y);
+	        		if(isKingChecked() == true)
+	        		{
+	        			setX(currPosX);
+		        		setY(currPosY);
+	        			System.out.println("Knight false");
+	        			return false;
+	        		}
+	        		setX(currPosX);
+	        		setY(currPosY);
+	        		
+	    			System.out.println("Knight true");
     				return true;
     			}
-    			;
+    			
     		}
     	}
-    	
-    	
-    	
-    	
-    	
-    	
-    	//System.out.println("Current pos xy: " + getXValue() + getYValue());
-    	//System.out.println("Dest pos xy: " + destination_x + destination_y);
-                
-    	//System.out.println("Wrong!");       
-    	//System.out.println("Knight False!");
         return false;
     }
     
@@ -113,10 +152,6 @@ public class Knight extends Piece {
     		}
     	}
     	
-    	
     	return false;
-    }
-    
-   
-    
+    }   
 }
