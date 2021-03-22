@@ -77,4 +77,14 @@ public class Piece {
     {
         return false;
     }
+    
+    public boolean canMoveCheckMate(int destination_x, int destination_y)
+    {
+        return false;
+    }
+    
+    public String getChecked()
+    {
+    	return "XX";
+    }
 }

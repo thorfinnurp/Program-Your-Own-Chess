@@ -106,6 +106,44 @@ public class Queen extends Piece {
     		}
     		
 		}
+    	
+        return false;
+    }
+    
+    
+    
+    @Override
+    public boolean canMoveCheckMate(int destination_x, int destination_y)
+    {
+        // Remember: A Queen can move as many squares as she wants forward, 
+        // backward, sideways, or diagonally, without jumping over any pieces.
+        // She cannot attack her own pieces.
+        
+                // WRITE CODE HERE
+    	currPosY = this.getY();
+    	currPosX = this.getX();
+    	p = Queen.this.board.getPiece(destination_x, destination_y);
+
+    	if((p == null) || (p.isWhite() != isWhite()) || (p.isBlack() != isBlack()))
+		{
+    		
+    		if(destOKBishop( destination_x, destination_y, getX(), getY()))
+    		{
+    			if (PathOKBishop(destination_x, destination_y, getX(), getY()))
+    			{
+    				return true;
+    			}
+    			
+    		}
+    		else if(DestOKRook(getX(), getY(),destination_x, destination_y))
+    		{
+    			if (PathOKRook(destination_x, destination_y, getX(), getY()))
+    			{
+    				return true;
+    			}
+    		}
+    		
+		}
     	//System.out.println("Queen False!");
         return false;
     }

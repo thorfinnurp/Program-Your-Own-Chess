@@ -32,10 +32,8 @@ public class Knight extends Piece {
     	Black_Pieces = board.getBlackPieces();
     	if(isWhite())
     	{
-    		//System.out.println("IsWhite");
     		if (White_Pieces.get(0).isKing() == true)
     		{
-    			//System.out.println("King found");
     			if(White_Pieces.get(0).isCheckmate() == true)
     			{
     				return true;
@@ -46,7 +44,6 @@ public class Knight extends Piece {
     	{
     		if (Black_Pieces.get(0).isKing() == true)
     		{
-    			//System.out.println("King found");
     			if(Black_Pieces.get(0).isCheckmate() == true)
     			{
     				return true;
@@ -61,27 +58,37 @@ public class Knight extends Piece {
     {
     	currPosY = getY();
     	currPosX = getX();
-    	p = Knight.this.board.getPiece(destination_x, destination_y);
+    	White_Pieces = board.getWhitePieces();
+    	Black_Pieces = board.getBlackPieces();
+    	
+       	p = Knight.this.board.getPiece(destination_x, destination_y);
+    	
     	
     	if(Knight.this.isWhite())
     	{
     		if(calcMove(destination_x, destination_y, getX(), getY()) == true)
     		{
     			if((p == null)||(p.isBlack() == true))
-    			{
+    			{	
+    				if(White_Pieces.get(0).getChecked().equals(String.valueOf(String.valueOf(destination_x) + String.valueOf(destination_y))))
+        			{
+        				return true;
+        			}
+    				
     				setX(destination_x);
 	        		setY(destination_y);
+	        		
 	        		if(isKingChecked() == true)
 	        		{
 	        			setX(currPosX);
 		        		setY(currPosY);
-	        			System.out.println("Knight false");
+	        			System.out.println(White_Pieces.get(0).getChecked() + "   " + String.valueOf(destination_x) + String.valueOf(destination_y));
+	        			
 	        			return false;
 	        		}
+	        		
 	        		setX(currPosX);
 	        		setY(currPosY);
-	        		
-	    			System.out.println("Knight true");
     				return true;
     			}
     		}
@@ -92,19 +99,23 @@ public class Knight extends Piece {
     		{
     			if((p == null)||(p.isWhite() == true))
     			{
+	        		System.out.println(Black_Pieces.get(0).getChecked() + "=" + String.valueOf(destination_x) + String.valueOf(destination_y));
+	        			
+	        		if(Black_Pieces.get(0).getChecked().equals(String.valueOf(String.valueOf(destination_x) + String.valueOf(destination_y))))// == String.valueOf(destination_x) + String.valueOf(destination_y))
+        			{
+        				return true;
+        			}
+	        		
     				setX(destination_x);
 	        		setY(destination_y);
 	        		if(isKingChecked() == true)
 	        		{
 	        			setX(currPosX);
 		        		setY(currPosY);
-	        			System.out.println("Knight false");
 	        			return false;
 	        		}
 	        		setX(currPosX);
 	        		setY(currPosY);
-	        		
-	    			System.out.println("Knight true");
     				return true;
     			}
     			
@@ -112,6 +123,48 @@ public class Knight extends Piece {
     	}
         return false;
     }
+    
+    
+    
+    @Override
+    public boolean canMoveCheckMate(int destination_x, int destination_y)
+    {
+    	currPosY = getY();
+    	currPosX = getX();
+    	
+    	
+    	//System.out.println("1X,Y" + currPosX + currPosY);
+    	p = Knight.this.board.getPiece(destination_x, destination_y);
+    	
+    	if(p.isKing())
+    	{
+    		System.out.println("kingisAt:" + destination_x + destination_y);
+    	}
+    	if(Knight.this.isWhite())
+    	{
+    		if(calcMove(destination_x, destination_y, getX(), getY()) == true)
+    		{
+    			if((p == null)||(p.isBlack() == true))
+    			{
+    				return true;
+    			}
+    		}
+    	}
+    	else
+    	{
+    		if(calcMove(destination_x, destination_y, getX(), getY()) == true)
+    		{
+    			if((p == null)||(p.isWhite() == true))
+    			{
+    				return true;
+    			}
+    		}
+    	}
+        return false;
+    }
+    
+    
+ 
     
     public boolean calcMove(int x, int y, int currX, int currY)
     {

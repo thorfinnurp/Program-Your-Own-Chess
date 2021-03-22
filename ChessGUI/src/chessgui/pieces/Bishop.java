@@ -108,6 +108,33 @@ public class Bishop extends Piece {
     }
     
     
+    @Override
+    public boolean canMoveCheckMate(int destination_x, int destination_y)
+    {
+    	//if p.board.White_Pieces
+    	currPosY = getYValue();
+    	currPosX = getXValue();
+    	
+    	if(calcMove(destination_x, destination_y,getXValue(),getYValue()) == true)
+    	{
+    		p = Bishop.this.board.getPiece(destination_x, destination_y);
+    		
+    		if((p == null) || (p.isWhite() != isWhite()) || (p.isBlack() != isBlack()))
+    		{
+	    		if(PathOK(destination_x, destination_y,getXValue(),getYValue()) == true)
+	    		{
+	    			return true;	    			
+	    		}
+	    		else
+	    		{
+	    			return false;
+	    		}
+    		}
+    	}
+    	
+        return false;
+    }
+    
     
     //recursive spaghetti sem virkar?
     public boolean PathOK(int x, int y, int currX, int currY)

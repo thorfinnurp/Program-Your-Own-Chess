@@ -79,7 +79,7 @@ public class Rook extends Piece {
     		{
     			//Lika notað í að tékka á skák, þarf að laga.
     			setX(destination_x);
-        		setY(destination_y);
+        	 	setY(destination_y);
         		if(isKingChecked() == true)
         		{
         			setX(currPosX);
@@ -101,6 +101,33 @@ public class Rook extends Piece {
         return false;
     }
     
+    
+    @Override
+    public boolean canMoveCheckMate(int destination_x, int destination_y)
+    {
+    	currPosY = this.getY();
+    	currPosX = this.getX();
+        
+    	p = Rook.this.board.getPiece(destination_x, destination_y);
+		
+		if((p == null) || (p.isWhite() != isWhite()) || (p.isBlack() != isBlack()))
+    	if ((DestOK(destination_x, destination_y, Rook.this.getX(), Rook.this.getY()) == true))
+    	{
+    		if(PathOK(destination_x, destination_y, Rook.this.getX(), Rook.this.getY()) == true)
+    		{
+    			//Lika notað í að tékka á skák, þarf að laga.
+   		
+    			System.out.println("true");
+    		
+    			hasMoved = true;
+    			
+    			
+    			return true;
+    		}
+    	}	
+        return false;
+    }
+    
     public boolean DestOK(int x,int y, int destination_x, int destination_y)
     {
     	if((x == destination_x) || (y == destination_y))
@@ -111,8 +138,6 @@ public class Rook extends Piece {
     	
     	return false;
     }
-    
-    
     
     public boolean PathOK(int x, int y, int currX, int currY)
     {

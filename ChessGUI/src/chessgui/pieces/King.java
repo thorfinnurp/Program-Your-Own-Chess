@@ -271,6 +271,44 @@ public class King extends Piece {
     	return true;
     }
     
+    @Override
+    public String getChecked()
+    {
+    	Integer newX;
+    	Integer newY;
+    	
+    	if(isBlack())
+    	{
+	    	White_Pieces = King.this.board.getWhitePieces();
+	    	for(int i = 1; i < White_Pieces.size(); i++)
+	    	{
+	    		if(White_Pieces.get(i).canMoveCheckMate(getX(), getY()) == true)
+	    		{
+	    			newX = White_Pieces.get(i).getX();
+	    			newY = White_Pieces.get(i).getY();
+	    				
+	    			return newX.toString() + newY.toString();
+	    		}
+	    	}
+    	}
+    	else
+    	{
+    		Black_Pieces = King.this.board.getBlackPieces();
+	    	for(int i = 1; i < Black_Pieces.size(); i++)
+	    	{ 
+	    		if(Black_Pieces.get(i).canMoveCheckMate(getX(), getY()) == true)
+	    		{
+	    			newX = White_Pieces.get(i).getX();
+    				newY = White_Pieces.get(i).getY();
+    				
+    				return newX.toString() + newY.toString();
+	    		}
+	    	}
+    	}
+    	
+    	return "X";
+    }
+    
     //check if King can move to destination
     public boolean check(int destination_x, int destination_y)
     {
@@ -279,7 +317,7 @@ public class King extends Piece {
 	    	White_Pieces = King.this.board.getWhitePieces();
 	    	for(int i = 1; i < White_Pieces.size(); i++)
 	    	{
-	    		if(White_Pieces.get(i).canMove(destination_x, destination_y) == true)
+	    		if(White_Pieces.get(i).canMoveCheckMate(destination_x, destination_y) == true)
 	    		{
 	    			return false;
 	    		}
@@ -289,8 +327,8 @@ public class King extends Piece {
     	{
     		Black_Pieces = King.this.board.getBlackPieces();
 	    	for(int i = 1; i < Black_Pieces.size(); i++)
-	    	{
-	    		if(Black_Pieces.get(i).canMove(destination_x, destination_y) == true)
+	    	{ 
+	    		if(Black_Pieces.get(i).canMoveCheckMate(destination_x, destination_y) == true)
 	    		{
 	    			return false;
 	    		}
