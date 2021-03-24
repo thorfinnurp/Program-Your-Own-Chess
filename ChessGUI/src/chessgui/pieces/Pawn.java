@@ -59,10 +59,9 @@ public class Pawn extends Piece {
     	{
     		if (Black_Pieces.get(0).isKing() == true)
     		{
-    			System.out.println("King found");
+    			//System.out.println("King found");
     			if(Black_Pieces.get(0).isCheckmate() == true)
     			{
-    				
     				return true;
     			}
     		}	
@@ -94,7 +93,7 @@ public class Pawn extends Piece {
 		    	if(Pawn.this.isWhite() == true)
 		    	{
 		    	
-		    		if((destination_y == getYValue() + 1) || (destination_y == getYValue() + 2))
+		    		if((destination_y == getYValue() + 1) || ((destination_y == getYValue() + 2) && (getYValue() == 1)))
 		    		{
 		    			//System.out.println("white True!"); 
 		    			setX(destination_x);
@@ -103,20 +102,21 @@ public class Pawn extends Piece {
 		        		{
 		        			setX(currPosX);
 			        		setY(currPosY);
-		        			System.out.println("false");
+		        		//	System.out.println("false");
 		        			return false;
 		        		}
 		        		setX(currPosX);
 		        		setY(currPosY);
 		        		
-		    			System.out.println("true");
+		    			//System.out.println("true");
+		        		createQueen(destination_x, destination_y);
 		    			
 		        		return true;
 		    		}
 		    	}
 		    	else {
 		    		
-		    		if((destination_y == getYValue() - 1) || (destination_y == getYValue() - 2))
+		    		if((destination_y == getYValue() - 1) || ((destination_y == getYValue() - 2) && (getYValue() == 6)))
 		    		{
 		    			//System.out.println("Black True!"); 
 		    			setX(destination_x);
@@ -125,13 +125,14 @@ public class Pawn extends Piece {
 		        		{
 		        			setX(currPosX);
 			        		setY(currPosY);
-		        			System.out.println("false");
+		        			//System.out.println("false");
 		        			return false;
 		        		}
 		        		setX(currPosX);
 		        		setY(currPosY);
 		        		
-		    			System.out.println("true");
+		    			//System.out.println("true");
+		        		createQueen(destination_x, destination_y);
 		        		return true;
 		    		}
 		    		
@@ -152,13 +153,14 @@ public class Pawn extends Piece {
 	        		{
 	        			setX(currPosX);
 		        		setY(currPosY);
-	        			System.out.println("false");
+	        			//System.out.println("false");
 	        			return false;
 	        		}
 	        		setX(currPosX);
 	        		setY(currPosY);
 	        		
-	    			System.out.println("true");
+	    			//System.out.println("true");
+	        		createQueen(destination_x, destination_y);
     	    		return true;
     	    	}
     		}
@@ -176,13 +178,14 @@ public class Pawn extends Piece {
 	        		{
 	        			setX(currPosX);
 		        		setY(currPosY);
-	        			System.out.println("false");
+	        			//System.out.println("false");
 	        			return false;
 	        		}
 	        		setX(currPosX);
 	        		setY(currPosY);
 	        		
-	    			System.out.println("true");
+	    			//System.out.println("true");
+	        		createQueen(destination_x, destination_y);
     	    		return true;
     	    	}	
     		}	
@@ -194,6 +197,30 @@ public class Pawn extends Piece {
     	}*/
         return false;
     }
+    
+    public boolean createQueen(int destX, int destY)
+    {
+    	ArrayList<Piece> White_Pieces = Pawn.this.board.getWhitePieces();
+    	ArrayList<Piece> Black_Pieces = Pawn.this.board.getBlackPieces();
+    	if(this.isWhite())
+    		if(destY == 7)
+    		{
+    			White_Pieces.add(new Queen(destX,destY,true,"Queen.png",this.board));
+    			White_Pieces.remove(this);
+    			return false;
+    		}
+    	else
+    	{
+    		if(destY == 0)
+    		{
+    			Black_Pieces.add(new Queen(destX,destY,false,"Queen.png",this.board));
+    			Black_Pieces.remove(this);
+    			return false;
+    		}
+    	}
+    	return true;
+   
+	}
     
     @Override
     public boolean canMoveCheckMate(int destination_x, int destination_y)
@@ -220,8 +247,6 @@ public class Pawn extends Piece {
 		    	
 		    		if((destination_y == getYValue() + 1) || (destination_y == getYValue() + 2))
 		    		{
-		    		
-		    			
 		        		return true;
 		    		}
 		    	}
