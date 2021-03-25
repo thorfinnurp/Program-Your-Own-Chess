@@ -198,7 +198,7 @@ public class Pawn extends Piece {
         return false;
     }
     
-    public boolean createQueen(int destX, int destY)
+    public void createQueen(int destX, int destY)
     {
     	ArrayList<Piece> White_Pieces = Pawn.this.board.getWhitePieces();
     	ArrayList<Piece> Black_Pieces = Pawn.this.board.getBlackPieces();
@@ -207,7 +207,7 @@ public class Pawn extends Piece {
     		{
     			White_Pieces.add(new Queen(destX,destY,true,"Queen.png",this.board));
     			White_Pieces.remove(this);
-    			return false;
+    			
     		}
     	else
     	{
@@ -215,11 +215,10 @@ public class Pawn extends Piece {
     		{
     			Black_Pieces.add(new Queen(destX,destY,false,"Queen.png",this.board));
     			Black_Pieces.remove(this);
-    			return false;
+    		
     		}
     	}
-    	return true;
-   
+ 
 	}
     
     @Override

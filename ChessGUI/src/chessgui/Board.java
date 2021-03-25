@@ -175,62 +175,155 @@ public class Board extends JComponent {
 
                 
         }
+        
+        public int getRandomNumber(int min, int max) {
+            return (int) ((Math.random() * (max - min)) + min);
+        }
 
         @Override
         public void mousePressed(MouseEvent e) {
+        	
+      
             int d_X = e.getX();
-            int d_Y = e.getY();  
+            int d_Y = e.getY(); 
+            boolean foundLegalMove = false;
             int Clicked_Row = d_Y / Square_Width;
             int Clicked_Column = d_X / Square_Width;
-            boolean is_whites_turn = true;
-            if (turnCounter%2 == 1)
-            {
-                is_whites_turn = false;
-            }
             
-            Piece clicked_piece = getPiece(Clicked_Column, Clicked_Row);
+            int randX = 0;
+            int randY = 0;
+            int randPiece = 0;
+
             
-            if (Active_Piece == null && clicked_piece != null && 
-                    ((is_whites_turn && clicked_piece.isWhite()) || (!is_whites_turn && clicked_piece.isBlack())))
+            System.out.println("1-TurnCounter: "+ turnCounter);
+            if (turnCounter%2 == 0)
             {
-                Active_Piece = clicked_piece;
+            	movePiece(d_X, d_Y, Clicked_Row, Clicked_Column, true);
+            	drawBoard();
             }
-            else if (Active_Piece != null && Active_Piece.getX() == Clicked_Column && Active_Piece.getY() == Clicked_Row)
+            System.out.println("2-TurnCounter: "+ turnCounter);
+         //   if(is_whites_turn == false)
+            if(turnCounter%2 == 1)
             {
-                Active_Piece = null;
+            	System.out.println("2.5-TurnCounter: "+ turnCounter);
+            	while(turnCounter%2 == 1)
+            	{
+            		foundLegalMove = false;
+            		System.out.println("2.6-TurnCounter: "+ turnCounter + " foundLegalMove: " + foundLegalMove);
+		            
+            		randPiece = getRandomNumber(0, Black_Pieces.size());
+            		int counter = 0;
+            		while((foundLegalMove == false) && (counter <= 50))
+		            {
+            			counter++;
+		            	randX = getRandomNumber(0,7);
+		            	randY = getRandomNumber(0, 7);
+		            	
+		            	
+		            	System.out.println("2.6-TurnCounter: "+ turnCounter + " foundLegalMove: " + foundLegalMove + " RandPiece: " + randPiece + " counter: " + counter);
+		            	if(Black_Pieces.get(randPiece) != null)
+		            	{
+			            	if(Black_Pieces.get(randPiece).canMoveCheckMate(randX, randY))
+			            	{
+			            		foundLegalMove = true;
+			            	}
+		            	}
+		            }
+		            
+	            	movePieceBlack(Black_Pieces.get(randPiece).getX(), Black_Pieces.get(randPiece).getY(), randX, randY, false);
+	            	drawBoard();
+            	}
+	            
             }
-            else if (Active_Piece != null && Active_Piece.canMove(Clicked_Column, Clicked_Row) 
-                    && ((is_whites_turn && Active_Piece.isWhite()) || (!is_whites_turn && Active_Piece.isBlack())))
-            {
-                // if piece is there, remove it so we can be there
-                if (clicked_piece != null)
-                {
-                    if (clicked_piece.isWhite())
-                    {
-                        White_Pieces.remove(clicked_piece);
-                    }
-                    else
-                    {
-                        Black_Pieces.remove(clicked_piece);
-                    }
-                }
-                // do move
-                Active_Piece.setX(Clicked_Column);
-                Active_Piece.setY(Clicked_Row);
-                
-                // if piece is a pawn set has_moved to true
-                if (Active_Piece.getClass().equals(Pawn.class))
-                {
-                    Pawn castedPawn = (Pawn)(Active_Piece);
-                    castedPawn.setHasMoved(true);
-                }
-                
-                
-                Active_Piece = null;
-                turnCounter++;
-            }
-            
+            System.out.println("3-TurnCounter: "+ turnCounter);
             drawBoard();
+           
+        }
+        
+        
+        
+        public void movePieceBlack(int d_X, int d_Y, int Clicked_Row, int Clicked_Column, boolean is_whites_turn)
+        { 
+        	
+             Piece clicked_piece = getPiece(Clicked_Column, Clicked_Row);
+             Active_Piece = getPiece(d_X, d_Y);
+             
+             if(Active_Piece.canMove(Clicked_Column, Clicked_Row))
+             {
+                 if (clicked_piece != null)
+                 {
+                     if (clicked_piece.isWhite())
+                     {
+                         White_Pieces.remove(clicked_piece);
+                     }
+                     else
+                     {
+                         Black_Pieces.remove(clicked_piece);
+                     }
+                 }
+                 // do move
+                 Active_Piece.setX(Clicked_Column);
+                 Active_Piece.setY(Clicked_Row);
+                 
+                 // if piece is a pawn set has_moved to true
+                 if (Active_Piece.getClass().equals(Pawn.class))
+                 {
+                     Pawn castedPawn = (Pawn)(Active_Piece);
+                     castedPawn.setHasMoved(true);
+                 }
+ 
+                 Active_Piece = null;
+                 turnCounter++;
+             }
+        }
+        public void movePiece(int d_X, int d_Y, int Clicked_Row, int Clicked_Column, boolean is_whites_turn)
+        {
+        	 if (turnCounter%2 == 1)
+             {
+                 is_whites_turn = false;
+             }
+             
+             Piece clicked_piece = getPiece(Clicked_Column, Clicked_Row);
+             
+             if (Active_Piece == null && clicked_piece != null && 
+                     ((is_whites_turn && clicked_piece.isWhite()) || (!is_whites_turn && clicked_piece.isBlack())))
+             {
+                 Active_Piece = clicked_piece;
+             }
+             else if (Active_Piece != null && Active_Piece.getX() == Clicked_Column && Active_Piece.getY() == Clicked_Row)
+             {
+                 Active_Piece = null;
+             }
+             else if (Active_Piece != null && Active_Piece.canMove(Clicked_Column, Clicked_Row) 
+                     && ((is_whites_turn && Active_Piece.isWhite()) || (!is_whites_turn && Active_Piece.isBlack())))
+             {
+                 // if piece is there, remove it so we can be there
+                 if (clicked_piece != null)
+                 {
+                     if (clicked_piece.isWhite())
+                     {
+                         White_Pieces.remove(clicked_piece);
+                     }
+                     else
+                     {
+                         Black_Pieces.remove(clicked_piece);
+                     }
+                 }
+                 // do move
+                 Active_Piece.setX(Clicked_Column);
+                 Active_Piece.setY(Clicked_Row);
+                 
+                 // if piece is a pawn set has_moved to true
+                 if (Active_Piece.getClass().equals(Pawn.class))
+                 {
+                     Pawn castedPawn = (Pawn)(Active_Piece);
+                     castedPawn.setHasMoved(true);
+                 }
+                 
+                 
+                 Active_Piece = null;
+                 turnCounter++;
+             }
         }
 
         @Override

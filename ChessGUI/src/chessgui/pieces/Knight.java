@@ -136,10 +136,10 @@ public class Knight extends Piece {
     	//System.out.println("1X,Y" + currPosX + currPosY);
     	p = Knight.this.board.getPiece(destination_x, destination_y);
     	
-    	if(p.isKing())
-    	{
-    		System.out.println("kingisAt:" + destination_x + destination_y);
-    	}
+    	//if(p.isKing())
+    //	{
+   // 		System.out.println("kingisAt:" + destination_x + destination_y);
+   // 	}
     	if(Knight.this.isWhite())
     	{
     		if(calcMove(destination_x, destination_y, getX(), getY()) == true)
