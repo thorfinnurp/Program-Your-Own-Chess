@@ -1,6 +1,9 @@
 package chessgui.pieces;
 
+import java.util.ArrayList;
+
 import chessgui.Board;
+//import chessgui.pieces.Bishop.Moves;
 
 public class Piece {
     private int x;
@@ -8,6 +11,47 @@ public class Piece {
     final private boolean is_white;
     private String file_path;
     public Board board;
+   // public ArrayList<Moves> LegalMoves;
+    
+    public class Moves
+    {
+    	int destX;
+    	int	destY;
+    	int currX;
+    	int currY;
+    	int score;
+    	
+    	public int getX()
+    	{
+    		return this.destX;
+    	}
+    	
+    	public int getY()
+    	{
+    		return this.destY;
+    	}
+    	
+    	public int getCurrY()
+    	{
+    		return this.currY;
+    	}
+    	public int getCurrX()
+    	{
+    		return this.currX;
+    	}
+    	public int getScore()
+    	{
+    		return this.score;
+    	}
+    	public Moves(int currX, int currY, int destX, int destY, int score)
+    	{
+    		this.destX = destX;
+    		this.destY = destY;
+    		this.score = score;
+    		this.currX = currX;
+    		this.currY = currY;
+    	}
+    }
     
     public Piece(int x, int y, boolean is_white, String file_path, Board board)
     {
@@ -86,5 +130,10 @@ public class Piece {
     public String getChecked()
     {
     	return "XX";
+    }
+    
+    public ArrayList<Moves> getAvailibleMoves()
+    {
+    	return null;
     }
 }

@@ -3,15 +3,72 @@ package chessgui.pieces;
 import java.util.ArrayList;
 
 import chessgui.Board;
+import chessgui.pieces.Piece.Moves;
 
 public class Knight extends Piece {
 	
-	private Piece p;
+	
+	//private Piece p;
 	private int currPosX;
 	private int currPosY;
 	public ArrayList<Piece> White_Pieces;
     public ArrayList<Piece> Black_Pieces;
     
+
+    public ArrayList<Moves> getAvailibleMoves()
+    {    
+    	Black_Pieces = board.getBlackPieces();
+    	White_Pieces = board.getWhitePieces();
+    	
+    	ArrayList<Moves> LegalMoves = new ArrayList<Moves>();
+    	LegalMoves = new ArrayList<Moves>();
+    	
+			for(int j = 0; j < 8;j++)
+			{
+				for(int k=0; k<8;k++)
+				{
+					if(!((j ==getX() ) && (k == getY())))
+					{
+						//if(canMoveCheckMate(j, k))
+						if(canMove(j, k))
+						{
+							LegalMoves.add(new Moves(getX(),getY(),j,k,getPoints(j,k)));
+						//	System.out.println("Knight added" + j + k +" Curr: " + getX() + getY() +  "CurrSize: " + LegalMoves.size());
+			        	}
+					}
+				}
+			}
+
+    	return LegalMoves;
+    }
+    
+    public int getPoints(int destX, int destY)
+    {
+    	Piece piece = this.board.getPiece(destX, destY);
+    	if(piece != null)
+    	{
+    		System.out.println("Class:" + piece.getClass().toString());
+    		if(piece.getClass().toString().equals("class chessgui.pieces.Queen")) //== "class chessgui.pieces.Queen")
+    		{
+    			System.out.println("Point Qween");
+    			return 10;
+    		}
+    		else if(piece.getClass().toString().equals("class chessgui.pieces.Rook"))
+    		{
+    			return 9;
+    		}
+    		else if((piece.getClass().toString().equals("class chessgui.pieces.Bishop")) || (piece.getClass().toString().equals("class chessgui.pieces.Knight")))
+    		{
+    			return 8;
+    		}
+    		else if(piece.getClass().toString().equals("class chessgui.pieces.Pawn"))
+    		{
+    			return 7;
+    		}
+    		
+    	}
+    	return 0;
+    }
 
     public Knight(int x, int y, boolean is_white, String file_path, Board board)
     {
@@ -61,7 +118,7 @@ public class Knight extends Piece {
     	White_Pieces = board.getWhitePieces();
     	Black_Pieces = board.getBlackPieces();
     	
-       	p = Knight.this.board.getPiece(destination_x, destination_y);
+    	Piece p = Knight.this.board.getPiece(destination_x, destination_y);
     	
     	
     	if(Knight.this.isWhite())
@@ -82,7 +139,7 @@ public class Knight extends Piece {
 	        		{
 	        			setX(currPosX);
 		        		setY(currPosY);
-	        			System.out.println(White_Pieces.get(0).getChecked() + "   " + String.valueOf(destination_x) + String.valueOf(destination_y));
+	        			//System.out.println(White_Pieces.get(0).getChecked() + "   " + String.valueOf(destination_x) + String.valueOf(destination_y));
 	        			
 	        			return false;
 	        		}
@@ -99,7 +156,7 @@ public class Knight extends Piece {
     		{
     			if((p == null)||(p.isWhite() == true))
     			{
-	        		System.out.println(Black_Pieces.get(0).getChecked() + "=" + String.valueOf(destination_x) + String.valueOf(destination_y));
+	        		//System.out.println(Black_Pieces.get(0).getChecked() + "=" + String.valueOf(destination_x) + String.valueOf(destination_y));
 	        			
 	        		if(Black_Pieces.get(0).getChecked().equals(String.valueOf(String.valueOf(destination_x) + String.valueOf(destination_y))))// == String.valueOf(destination_x) + String.valueOf(destination_y))
         			{
@@ -132,9 +189,9 @@ public class Knight extends Piece {
     	currPosY = getY();
     	currPosX = getX();
     	
-    	
+    
     	//System.out.println("1X,Y" + currPosX + currPosY);
-    	p = Knight.this.board.getPiece(destination_x, destination_y);
+    	Piece p = Knight.this.board.getPiece(destination_x, destination_y);
     	
     	//if(p.isKing())
     //	{
@@ -144,7 +201,7 @@ public class Knight extends Piece {
     	{
     		if(calcMove(destination_x, destination_y, getX(), getY()) == true)
     		{
-    			if((p == null)||(p.isBlack() == true))
+    			//if((p == null)||(p.isBlack() == true))
     			{
     				return true;
     			}
@@ -154,7 +211,7 @@ public class Knight extends Piece {
     	{
     		if(calcMove(destination_x, destination_y, getX(), getY()) == true)
     		{
-    			if((p == null)||(p.isWhite() == true))
+    			//if((p == null)||(p.isWhite() == true))
     			{
     				return true;
     			}

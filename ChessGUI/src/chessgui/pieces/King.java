@@ -3,6 +3,7 @@ package chessgui.pieces;
 import java.util.ArrayList;
 
 import chessgui.Board;
+import chessgui.pieces.Piece.Moves;
 
 public class King extends Piece {
 	private int diffY;
@@ -23,7 +24,6 @@ public class King extends Piece {
     @Override
     public boolean isKing()
     {
-    	//System.out.println("Is King");
     	return true;
     }
     
@@ -41,6 +41,8 @@ public class King extends Piece {
     @Override
     public boolean canMove(int destination_x, int destination_y)
     {	
+    	int currPosX = getX();
+    	int currPosY = getY();
     	if(isCheckMate())
     	{
     		return false;
@@ -53,6 +55,17 @@ public class King extends Piece {
     	if(castle(destination_x, destination_y))
     	{
     		
+    		setX(destination_x);
+    		setY(destination_y);
+    		if(isChecked() == true)
+    		{
+    			setX(currPosX);
+        		setY(currPosY);
+    			return false;
+    		}
+    		setX(currPosX);
+    		setY(currPosY);
+    		  		
     		return true;
     	}
 		
@@ -62,6 +75,16 @@ public class King extends Piece {
 	    	{
 	    		if(check(destination_x, destination_y))
 	    		{
+	    			setX(destination_x);
+	        		setY(destination_y);
+	        		if(isChecked() == true)
+	        		{
+	        			setX(currPosX);
+	            		setY(currPosY);
+	        			return false;
+	        		}
+	        		setX(currPosX);
+	        		setY(currPosY);
 	    			hasMoved = true;
 	    			return true;
 	    		}
@@ -71,27 +94,74 @@ public class King extends Piece {
         return false;
     }
     
+ /*   @Override
+    public boolean canMoveCheckMate(int destination_x, int destination_y)
+    {	
+    	int currPosX = getX();
+    	int currPosY = getY();
+    	if(isCheckMate())
+    	{
+    		return false;
+    	}
+    	diffX = getX() - destination_x;
+    	diffY = getY() - destination_y;
+    	
+    	p = King.this.board.getPiece(destination_x, destination_y);
+    	
+    	if(castle(destination_x, destination_y))
+    	{
+    		
+    		//setX(destination_x);
+    		//setY(destination_y);
+    		if(isChecked() == true)
+    		{
+    			//setX(currPosX);
+        		//setY(currPosY);
+    			return false;
+    		}
+    		//setX(currPosX);
+    		//setY(currPosY);
+    		  		
+    		return true;
+    	}
+		
+		if((p == null) || (p.isWhite() != isWhite()) || (p.isBlack() != isBlack()))
+		{
+	    	if(((diffY < 2) && (diffY > -2)) && ((diffX < 2) && (diffX > -2)))
+	    	{
+	    		if(check(destination_x, destination_y))
+	    		{
+	    			//setX(destination_x);
+	        		//setY(destination_y);
+	        		if(isChecked() == true)
+	        		{
+	        			//setX(currPosX);
+	            		//setY(currPosY);
+	        			return false;
+	        		}
+	        		//setX(currPosX);
+	        		//setY(currPosY);
+	    			hasMoved = true;
+	    			return true;
+	    		}
+	    	}
+		}
+        
+        return false;
+    } */
+    
     public boolean castle(int destination_x, int destination_y)
     {
-    	
-    	//System.out.println("Check destination xy:" + destination_x + ',' + destination_y );
-
     	if (isWhite())
     	{
-    		//System.out.println("Check is White");
     		if(hasMoved == false)
     		{
-    		//	System.out.println("Check has Moved");
     			if((destination_x == 1) && (destination_y == 0))
-    			{
-    				//System.out.println("Check dest ok 81");
-    				
+    			{    				
     				Rook = King.this.board.getPiece(0, 0);
     				
     				if((Rook != null) && (King.this.board.getPiece(1, 0) == null) &&(King.this.board.getPiece(2, 0 )) == null )
-    				{
-    					//System.out.println("HasMoved " + Rook.hasMoved());
-    					
+    				{    					
     					if(Rook.hasMoved() == false)
     					{
     						//Check for checks from opponents in castle path
@@ -99,7 +169,6 @@ public class King extends Piece {
     						{
     							Rook.setX(2);
     							Rook.setY(0);
-    						
     							return true;
     						}
     					}
@@ -107,19 +176,14 @@ public class King extends Piece {
     			}
     			else if((destination_x == 5) && (destination_y == 0))
     			{
-    				//System.out.println("Check dest 50" );
     				Rook = King.this.board.getPiece(7, 0);
-    				//System.out.println("rook" + Rook.getX());
-    				
     				if((Rook != null) &&(King.this.board.getPiece(4, 0 )) == null &&(King.this.board.getPiece(5, 0) == null) && (King.this.board.getPiece(6, 0) == null))
     				{	
-    					//System.out.println("path check ok");
     					if(Rook.hasMoved() == false)
     					{
     						//Check for checks from opponents in castle path
     						if(check(4, 0) && check(5, 0) && check(6, 0))
     						{
-	    						//System.out.println("Truetrue!!!");
 	    						Rook.setX(4);
 	    						Rook.setY(0);
 	    						return true;
@@ -131,48 +195,33 @@ public class King extends Piece {
     	}
     	else 
     	{
-    		//System.out.println("Check is White");
     		if(hasMoved == false)
     		{
-    			//System.out.println("Check has Moved");
     			if((destination_x == 1) && (destination_y == 7))
     			{
-    				//System.out.println("Check dest ok 81");
-    				
     				Rook = King.this.board.getPiece(0, 7);
-    				
     				if((Rook != null) && (King.this.board.getPiece(1, 7) == null) &&(King.this.board.getPiece(2, 7 )) == null )
-    				{
-    					//System.out.println("HasMoved " + Rook.hasMoved());
-    					
+    				{	
     					if(Rook.hasMoved() == false)
     					{
-    						
     						if(check(1, 7) && check(2, 7))
     						{
     							Rook.setX(2);
     							Rook.setY(7);
     							return true;
-    						}
-    						
-    						
+    						}		
     					}
     				}
     			}
     			else if((destination_x == 5) && (destination_y == 7))
     			{
-    				//System.out.println("Check dest 50" );
     				Rook = King.this.board.getPiece(7, 7);
-    				//System.out.println("rook" + Rook.getX());
-    				
     				if((Rook != null) &&(King.this.board.getPiece(4, 7 )) == null &&(King.this.board.getPiece(5, 7) == null) && (King.this.board.getPiece(6, 7) == null))
     				{	
-    					//System.out.println("path check ok");
     					if(Rook.hasMoved() == false)
     					{
-    						if(check(4, 0) && check(5, 0) && check(6, 0))
+    						if(check(4, 7) && check(5, 7) && check(6, 7))
     						{
-	    						//System.out.println("Truetrue!!!");
 	    						Rook.setX(4);
 	    						Rook.setY(7);
 	    						return true;
@@ -200,14 +249,12 @@ public class King extends Piece {
     	
     	if(check(getX(), getY()))
 	    {
-    		System.out.println("Not checked1");
 	    	return false;
 		}
     	if((getX() + 1 <= 7 ) && (getY()+1 <= 7))
     	{
     		if(check(getX() + 1, getY()+1))
     		{
-    			System.out.println("11111111111111111");
     			return false;
     		}
     		
@@ -216,7 +263,6 @@ public class King extends Piece {
     	{
     		if(check(getX() - 1, getY() - 1))
     	    {
-    			System.out.println("2222222222222222");
     	    	return false;
     		}
     	}
@@ -224,7 +270,6 @@ public class King extends Piece {
     	{
     		if(check(getX() - 1, getY() + 1))
     	    {
-    			System.out.println("33333333333333");
     	    	return false;
     		}
     	}
@@ -232,7 +277,6 @@ public class King extends Piece {
     	{
     		if(check(getX() + 1, getY() - 1))
     	    {
-    			System.out.println("44444444444444444");
     	    	return false;
     		}
     	}
@@ -240,7 +284,6 @@ public class King extends Piece {
     	{
     		if(check(getX(), getY() - 1))
     	    {
-    			System.out.println("5555555555555555555555");
     	    	return false;
     		}
     	}
@@ -248,7 +291,6 @@ public class King extends Piece {
     	{
     		if(check(getX(), getY() + 1))
     	    {
-    			System.out.println("666666666666666");
     	    	return false;
     		}
     	}
@@ -256,7 +298,6 @@ public class King extends Piece {
     	{
     		if(check(getX() -1, getY()))
     	    {
-    			System.out.println("777777777777777777777777");
     	    	return false;
     		}
     	}
@@ -264,7 +305,6 @@ public class King extends Piece {
     	{
     		if(check(getX(), getY() + 1))
     	    {
-    			System.out.println("888888888888888888888");
     	    	return false;
     		}
     	}
@@ -300,7 +340,6 @@ public class King extends Piece {
 	    		{
 	    			newX = White_Pieces.get(i).getX();
     				newY = White_Pieces.get(i).getY();
-    				
     				return newX.toString() + newY.toString();
 	    		}
 	    	}
@@ -309,13 +348,71 @@ public class King extends Piece {
     	return "X";
     }
     
+    
+    public ArrayList<Moves> getAvailibleMoves()
+    {    
+    	Black_Pieces = board.getBlackPieces();
+    	White_Pieces = board.getWhitePieces();
+   
+    	ArrayList<Moves> LegalMoves = new ArrayList<Moves>();
+    	LegalMoves = new ArrayList<Moves>();
+    	
+			for(int j = 0; j < 8;j++)
+			{
+				for(int k=0; k<8;k++)
+				{
+					if(!((j ==getX() ) && (k == getY())))
+					{
+						if(canMove(j, k))
+			        	{
+							LegalMoves.add(new Moves(getX(),getY(),j,k,getPoints(j,k)));
+			        	}
+					}
+				}
+			}
+
+    	return LegalMoves;
+    }
+    
+    public int getPoints(int destX, int destY)
+    {
+    	Piece piece = this.board.getPiece(destX, destY);
+    	if(piece != null)
+    	{
+    		System.out.println("Class:" + piece.getClass().toString());
+    		if(piece.getClass().toString().equals("class chessgui.pieces.Queen")) 
+    		{
+    			System.out.println("Point Qween");
+    			return 10;
+    		}
+    		else if(piece.getClass().toString().equals("class chessgui.pieces.Rook"))
+    		{
+    			return 9;
+    		}
+    		else if((piece.getClass().toString().equals("class chessgui.pieces.Bishop")) || (piece.getClass().toString().equals("class chessgui.pieces.Knight")))
+    		{
+    			return 8;
+    		}
+    		else if(piece.getClass().toString().equals("class chessgui.pieces.Pawn"))
+    		{
+    			return 7;
+    		}
+    		else if(castle(destX,destY))
+    		{
+    			return 8;
+    		}
+    		
+    	}
+    	return 0;
+    }
+    
     //check if King can move to destination
     public boolean check(int destination_x, int destination_y)
     {
     	if(isBlack())
     	{
 	    	White_Pieces = King.this.board.getWhitePieces();
-	    	for(int i = 1; i < White_Pieces.size(); i++)
+	    	for(int i = 0; i < White_Pieces.size(); i++)
 	    	{
 	    		if(White_Pieces.get(i).canMoveCheckMate(destination_x, destination_y) == true)
 	    		{
@@ -326,7 +423,7 @@ public class King extends Piece {
     	else
     	{
     		Black_Pieces = King.this.board.getBlackPieces();
-	    	for(int i = 1; i < Black_Pieces.size(); i++)
+	    	for(int i = 0; i < Black_Pieces.size(); i++)
 	    	{ 
 	    		if(Black_Pieces.get(i).canMoveCheckMate(destination_x, destination_y) == true)
 	    		{

@@ -1,6 +1,8 @@
 package chessgui;
 
 import chessgui.pieces.*;
+import chessgui.pieces.Piece.Moves;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
@@ -32,6 +34,7 @@ public class Board extends JComponent {
     private Integer[][] BoardGrid;
     private String board_file_path = "images" + File.separator + "board.png";
     private String active_square_file_path = "images" + File.separator + "active_square.png";
+    private ArrayList<ArrayList<Moves>> LMove;
 
     
     public ArrayList<Piece> getWhitePieces()
@@ -90,6 +93,7 @@ public class Board extends JComponent {
         Black_Pieces.add(new Pawn(6,6,false,"Pawn.png",this));
         Black_Pieces.add(new Pawn(7,6,false,"Pawn.png",this));
 
+        LMove = new ArrayList<ArrayList<Moves>>(Black_Pieces.size());
     }
 
     public Board() {
@@ -117,7 +121,31 @@ public class Board extends JComponent {
         this.requestFocus();
         drawBoard();
     }
-
+    
+    
+   /* private void getAvailibleMoves()
+    {
+    	ArrayList<ArrayList<Integer> > aList = new ArrayList<ArrayList<Integer> >(15);
+    	
+    	for(int i = 0; i < Black_Pieces.size(); i++)
+    	{
+    		if (Black_Pieces.get(i) != null)
+	    	{
+    			for(int j = 0; j < 7;j++)
+    			{
+    				for(int k=0; k<7;k++)
+    				{
+    					if(Black_Pieces.get(i).canMoveCheckMate(j, k))
+    		        	{
+    		        		
+    		        	}
+    					
+    				}
+    			}
+	        	
+	    	}
+    	}
+    }*/
 
     private void drawBoard()
     {
@@ -183,7 +211,7 @@ public class Board extends JComponent {
         @Override
         public void mousePressed(MouseEvent e) {
         	
-      
+        	
             int d_X = e.getX();
             int d_Y = e.getY(); 
             boolean foundLegalMove = false;
@@ -193,88 +221,145 @@ public class Board extends JComponent {
             int randX = 0;
             int randY = 0;
             int randPiece = 0;
+            int RandMove = 0;
+            Black_Pieces = getBlackPieces();
+    		//ArrayList<Moves> LegalMoves = new ArrayList<Moves>();
+    		//ArrayList<ArrayList<Moves>> LMove = new ArrayList<ArrayList<Moves>>(Black_Pieces.size());
 
             
-            System.out.println("1-TurnCounter: "+ turnCounter);
+            
+           // System.out.println("1-TurnCounter: "+ turnCounter);
             if (turnCounter%2 == 0)
             {
             	movePiece(d_X, d_Y, Clicked_Row, Clicked_Column, true);
-            	drawBoard();
             }
-            System.out.println("2-TurnCounter: "+ turnCounter);
+            //System.out.println("2-TurnCounter: "+ turnCounter);
          //   if(is_whites_turn == false)
             if(turnCounter%2 == 1)
             {
-            	System.out.println("2.5-TurnCounter: "+ turnCounter);
-            	while(turnCounter%2 == 1)
+      
+            	LMove.clear();
+            	
+            	for(int i = 0; i < Black_Pieces.size(); i++)
             	{
-            		foundLegalMove = false;
-            		System.out.println("2.6-TurnCounter: "+ turnCounter + " foundLegalMove: " + foundLegalMove);
-		            
-            		randPiece = getRandomNumber(0, Black_Pieces.size());
-            		int counter = 0;
-            		while((foundLegalMove == false) && (counter <= 50))
-		            {
-            			counter++;
-		            	randX = getRandomNumber(0,7);
-		            	randY = getRandomNumber(0, 7);
-		            	
-		            	
-		            	System.out.println("2.6-TurnCounter: "+ turnCounter + " foundLegalMove: " + foundLegalMove + " RandPiece: " + randPiece + " counter: " + counter);
-		            	if(Black_Pieces.get(randPiece) != null)
-		            	{
-			            	if(Black_Pieces.get(randPiece).canMoveCheckMate(randX, randY))
-			            	{
-			            		foundLegalMove = true;
-			            	}
-		            	}
-		            }
-		            
-	            	movePieceBlack(Black_Pieces.get(randPiece).getX(), Black_Pieces.get(randPiece).getY(), randX, randY, false);
-	            	drawBoard();
+            		if (Black_Pieces.get(i)!= null)
+            		{
+            			ArrayList<Moves> newMoves = new ArrayList<Moves>();
+            			newMoves =Black_Pieces.get(i).getAvailibleMoves();
+            			LMove.add(newMoves);
+            		}
             	}
-	            
+            	boolean foundMove = false;
+            	
+            	int bestPiece = 0;
+            	int bestMove = 0;
+            	int bestPoints = 1;
+            	
+            	for(int i = 0; i < LMove.size(); i++)
+            	{
+            		if(LMove.get(i).size() != 0)
+            		{
+            			foundMove = true;
+            		}
+            		for(int j = 0; j < LMove.get(i).size(); j++)
+            		{
+            			
+            			if(LMove.get(i).get(j) != null)
+						{
+            				if (LMove.get(i).get(j).getScore() > bestPoints)
+							{
+            					 bestPiece = i;
+            					 bestMove = j;
+            	            	 bestPoints = LMove.get(i).get(j).getScore();
+            	            	 System.out.println("BestMOve Found!");
+							}
+						}
+            		}
+            		
+            	}
+            	
+            	if(foundMove == true)
+            	{
+
+	            	while(turnCounter%2 == 1)
+	            	{
+	            		foundLegalMove = false;
+	            	//	System.out.println("2.6-TurnCounter: "+ turnCounter + " foundLegalMove: " + foundLegalMove + " MoveSize: " + LMove.size());
+			            
+	            		randPiece = 0;
+	            		
+	            		if(bestPoints == 1)
+	            		{
+	            			randPiece = getRandomNumber(0, LMove.size());
+	            			RandMove = getRandomNumber(0, LMove.get(randPiece).size());
+	            		}
+	            		else 
+	            		{
+	            			randPiece = bestPiece;
+	            			RandMove = bestMove;
+	            			System.out.println("BestMOve Found!");
+	            		}
+	            		
+	            		
+	            		
+	            		
+	            		
+	            		if(LMove.get(randPiece).size() != 0 && LMove.get(randPiece).get(RandMove) != null)
+	            		{
+	            			movePieceBlack(LMove.get(randPiece).get(RandMove).getCurrX(),LMove.get(randPiece).get(RandMove).getCurrY(),LMove.get(randPiece).get(RandMove).getX(), LMove.get(randPiece).get(RandMove).getY(), false);
+	            		}
+	            	}
+            	}
             }
-            System.out.println("3-TurnCounter: "+ turnCounter);
+            
             drawBoard();
-           
+            LMove.clear();
+        	
         }
-        
-        
-        
-        public void movePieceBlack(int d_X, int d_Y, int Clicked_Row, int Clicked_Column, boolean is_whites_turn)
+             
+        public void movePieceBlack(int d_X, int d_Y, int DestX, int DestY, boolean is_whites_turn)
         { 
         	
-             Piece clicked_piece = getPiece(Clicked_Column, Clicked_Row);
+			System.out.println("TRY curr:" + d_X + d_Y + " Dest: "+ DestX + DestY );
+			//Laga að currXY = destXY!
+            // Piece clicked_piece = getPiece(Clicked_Column, Clicked_Row);
+			Piece clicked_piece = getPiece(DestX,DestY);
              Active_Piece = getPiece(d_X, d_Y);
-             
-             if(Active_Piece.canMove(Clicked_Column, Clicked_Row))
+             if(Active_Piece == null)
              {
-                 if (clicked_piece != null)
-                 {
-                     if (clicked_piece.isWhite())
-                     {
-                         White_Pieces.remove(clicked_piece);
-                     }
-                     else
-                     {
-                         Black_Pieces.remove(clicked_piece);
-                     }
-                 }
-                 // do move
-                 Active_Piece.setX(Clicked_Column);
-                 Active_Piece.setY(Clicked_Row);
-                 
-                 // if piece is a pawn set has_moved to true
-                 if (Active_Piece.getClass().equals(Pawn.class))
-                 {
-                     Pawn castedPawn = (Pawn)(Active_Piece);
-                     castedPawn.setHasMoved(true);
-                 }
- 
-                 Active_Piece = null;
-                 turnCounter++;
+            	 System.out.println("Active Null");
              }
+             
+            // if(Active_Piece != null)
+            // {
+	             if(Active_Piece.canMove(DestX, DestY))
+	             {
+	                 if (clicked_piece != null)
+	                 {
+	                     if (clicked_piece.isWhite())
+	                     {
+	                         White_Pieces.remove(clicked_piece);
+	                     }
+	                     else
+	                     {
+	                         Black_Pieces.remove(clicked_piece);
+	                     }
+	                 }
+	                 // do move
+	                 Active_Piece.setX(DestX);
+	                 Active_Piece.setY(DestY);
+	                 
+	                 // if piece is a pawn set has_moved to true
+	                 if (Active_Piece.getClass().equals(Pawn.class))
+	                 {
+	                     Pawn castedPawn = (Pawn)(Active_Piece);
+	                     castedPawn.setHasMoved(true);
+	                 }
+	 
+	                 Active_Piece = null;
+	                 turnCounter++;
+	             }
+            // }
         }
         public void movePiece(int d_X, int d_Y, int Clicked_Row, int Clicked_Column, boolean is_whites_turn)
         {

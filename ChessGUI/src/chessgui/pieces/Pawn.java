@@ -3,6 +3,7 @@ package chessgui.pieces;
 import java.util.ArrayList;
 
 import chessgui.Board;
+import chessgui.pieces.Piece.Moves;
 
 public class Pawn extends Piece {
 
@@ -14,6 +15,62 @@ public class Pawn extends Piece {
     
 	private int currPosX;
 	private int currPosY;
+	
+	public ArrayList<Moves> getAvailibleMoves()
+    {    
+    	Black_Pieces = board.getBlackPieces();
+    	White_Pieces = board.getWhitePieces();
+    	
+    	ArrayList<Moves> LegalMoves = new ArrayList<Moves>();
+    	LegalMoves = new ArrayList<Moves>();
+    	
+			for(int j = 0; j < 8;j++)
+			{
+				for(int k=0; k<8;k++)
+				{
+					if(!((j ==getX() ) && (k == getY())))
+					{
+						//if(canMoveCheckMate(j, k))
+						if(canMove(j, k))
+						{
+							LegalMoves.add(new Moves(getX(),getY(),j,k,getPoints(j,k)));
+						//	System.out.println("Pawn added" + j + k +" Curr: " + getX() + getY() +  "CurrSize: " + LegalMoves.size());
+			        	}
+					}
+				}
+			}
+
+    	return LegalMoves;
+    }
+	
+	public int getPoints(int destX, int destY)
+    {
+    	Piece piece = this.board.getPiece(destX, destY);
+    	if(piece != null)
+    	{
+    		System.out.println("Class:" + piece.getClass().toString());
+    		if(piece.getClass().toString().equals("class chessgui.pieces.Queen")) //== "class chessgui.pieces.Queen")
+    		{
+    			System.out.println("Point Qween");
+    			return 10;
+    		}
+    		else if(piece.getClass().toString().equals("class chessgui.pieces.Rook"))
+    		{
+    			return 9;
+    		}
+    		else if((piece.getClass().toString().equals("class chessgui.pieces.Bishop")) || (piece.getClass().toString().equals("class chessgui.pieces.Knight")))
+    		{
+    			return 8;
+    		}
+    		else if(piece.getClass().toString().equals("class chessgui.pieces.Pawn"))
+    		{
+    			return 7;
+    		}
+    		
+    	}
+    	return 0;
+    }
+	
     
     public Pawn(int x, int y, boolean is_white, String file_path, Board board)
     {
@@ -95,6 +152,15 @@ public class Pawn extends Piece {
 		    	
 		    		if((destination_y == getYValue() + 1) || ((destination_y == getYValue() + 2) && (getYValue() == 1)))
 		    		{
+		    			
+		    			if ((destination_y == getYValue() + 2) && (getYValue() == 1))
+		    			{
+		    				if(Pawn.this.board.getPiece(destination_x, destination_y - 1) != null)
+		    				{
+		    					return false;
+		    				}
+		    			}
+		    			
 		    			//System.out.println("white True!"); 
 		    			setX(destination_x);
 		        		setY(destination_y);
@@ -118,6 +184,17 @@ public class Pawn extends Piece {
 		    		
 		    		if((destination_y == getYValue() - 1) || ((destination_y == getYValue() - 2) && (getYValue() == 6)))
 		    		{
+		    			
+		    			if((destination_y == getYValue() - 2) && (getYValue() == 6))
+		    			{
+		    				if(Pawn.this.board.getPiece(destination_x, destination_y + 1) != null)
+		    				{
+		    					return false;
+		    				}
+		    			}
+		    			
+		    			
+		    			
 		    			//System.out.println("Black True!"); 
 		    			setX(destination_x);
 		        		setY(destination_y);
@@ -202,13 +279,16 @@ public class Pawn extends Piece {
     {
     	ArrayList<Piece> White_Pieces = Pawn.this.board.getWhitePieces();
     	ArrayList<Piece> Black_Pieces = Pawn.this.board.getBlackPieces();
+    	System.out.println("Create Queeen");
     	if(this.isWhite())
+    	{
     		if(destY == 7)
     		{
     			White_Pieces.add(new Queen(destX,destY,true,"Queen.png",this.board));
     			White_Pieces.remove(this);
     			
     		}
+    	}
     	else
     	{
     		if(destY == 0)
@@ -237,8 +317,9 @@ public class Pawn extends Piece {
     	p = Pawn.this.board.getPiece(destination_x, destination_y);
     
     	
-    	if(p == null) 
-    	{
+    	//Ekki skák ef peð fer beint
+    	//if(p == null) 
+    	/*{
     		if(getXValue() == destination_x)
     		{
 		    	if(Pawn.this.isWhite() == true)
@@ -259,13 +340,13 @@ public class Pawn extends Piece {
 		    		
 		    	}
     		}
-    	}
+    	}*/
     	if(Pawn.this.isWhite() == true)
     	{
     		if((destination_y == getYValue() + 1) && ((destination_x == getXValue() + 1) || (destination_x == getXValue()-1)) && (p!= null))
     		{
     			
-    			if(p.isBlack() == Pawn.this.isWhite())
+    			//if(p.isBlack() == Pawn.this.isWhite())
     	    	{
     	    		//System.out.println("W - Licence to Kill!");
     	    		return true;
@@ -276,7 +357,7 @@ public class Pawn extends Piece {
     	{
     		if((destination_y == getYValue() - 1) && ((destination_x == getXValue() + 1) || (destination_x == getXValue()-1)) && (p!= null))
     		{
-    			if(p.isBlack() == Pawn.this.isWhite())
+    			//if(p.isBlack() == Pawn.this.isWhite())
     	    	{
     	    		return true;
     	    	}	

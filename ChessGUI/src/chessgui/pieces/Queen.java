@@ -3,6 +3,7 @@ package chessgui.pieces;
 import java.util.ArrayList;
 
 import chessgui.Board;
+import chessgui.pieces.Piece.Moves;
 
 public class Queen extends Piece {
 
@@ -19,6 +20,62 @@ public class Queen extends Piece {
     public Queen(int x, int y, boolean is_white, String file_path, Board board)
     {
         super(x,y,is_white,file_path, board);
+    }
+    
+
+    public ArrayList<Moves> getAvailibleMoves()
+    {    
+    	Black_Pieces = board.getBlackPieces();
+    	White_Pieces = board.getWhitePieces();
+    	
+    	ArrayList<Moves> LegalMoves = new ArrayList<Moves>();
+    	LegalMoves = new ArrayList<Moves>();
+    	
+			for(int j = 0; j < 8;j++)
+			{
+				for(int k=0; k<8;k++)
+				{
+					if(!((j ==getX() ) && (k == getY())))
+					{
+						//if(canMoveCheckMate(j, k))
+						if(canMove(j, k))
+						{
+							LegalMoves.add(new Moves(getX(),getY(),j,k,getPoints(j,k)));
+							//System.out.println("qween added" + j + k +" Curr: " + getX() + getY() +  "CurrSize: " + LegalMoves.size());
+			        	}
+					}
+				}
+			}
+
+    	return LegalMoves;
+    }
+    
+    public int getPoints(int destX, int destY)
+    {
+    	Piece piece = this.board.getPiece(destX, destY);
+    	if(piece != null)
+    	{
+    		System.out.println("Class:" + piece.getClass().toString());
+    		if(piece.getClass().toString().equals("class chessgui.pieces.Queen")) //== "class chessgui.pieces.Queen")
+    		{
+    			System.out.println("Point Qween");
+    			return 10;
+    		}
+    		else if(piece.getClass().toString().equals("class chessgui.pieces.Rook"))
+    		{
+    			return 9;
+    		}
+    		else if((piece.getClass().toString().equals("class chessgui.pieces.Bishop")) || (piece.getClass().toString().equals("class chessgui.pieces.Knight")))
+    		{
+    			return 8;
+    		}
+    		else if(piece.getClass().toString().equals("class chessgui.pieces.Pawn"))
+    		{
+    			return 7;
+    		}
+    		
+    	}
+    	return 0;
     }
     
     public boolean isKingChecked()
@@ -41,7 +98,7 @@ public class Queen extends Piece {
     	{
     		if (Black_Pieces.get(0).isKing() == true)
     		{
-    			System.out.println("King found");
+    			//System.out.println("King found");
     			if(Black_Pieces.get(0).isCheckmate() == true)
     			{
     				return true;
@@ -77,7 +134,7 @@ public class Queen extends Piece {
 	        		{
 	        			setX(currPosX);
 		        		setY(currPosY);
-	        			System.out.println("false");
+	        			//System.out.println("false");
 	        			return false;
 	        		}
 	        		setX(currPosX);
@@ -96,7 +153,7 @@ public class Queen extends Piece {
 	        		{
 	        			setX(currPosX);
 		        		setY(currPosY);
-	        			System.out.println("Qfalse");
+	        			//System.out.println("Qfalse");
 	        			return false;
 	        		}
 	        		setX(currPosX);
@@ -124,7 +181,7 @@ public class Queen extends Piece {
     	currPosX = this.getX();
     	p = Queen.this.board.getPiece(destination_x, destination_y);
 
-    	if((p == null) || (p.isWhite() != isWhite()) || (p.isBlack() != isBlack()))
+    	//if((p == null) || (p.isWhite() != isWhite()) || (p.isBlack() != isBlack()))
 		{
     		
     		if(destOKBishop( destination_x, destination_y, getX(), getY()))

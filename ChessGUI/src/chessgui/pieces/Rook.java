@@ -3,6 +3,7 @@ package chessgui.pieces;
 import java.util.ArrayList;
 
 import chessgui.Board;
+import chessgui.pieces.Piece.Moves;
 
 public class Rook extends Piece {
 	private Piece p;
@@ -12,6 +13,62 @@ public class Rook extends Piece {
     
 	private int currPosX;
 	private int currPosY;
+	
+	//public ArrayList<Moves> LegalMoves;
+	public ArrayList<Moves> getAvailibleMoves()
+    {    
+    	Black_Pieces = board.getBlackPieces();
+    	White_Pieces = board.getWhitePieces();
+    	
+    	ArrayList<Moves> LegalMoves = new ArrayList<Moves>();
+    	LegalMoves = new ArrayList<Moves>();
+    	
+			for(int j = 0; j < 8;j++)
+			{
+				for(int k=0; k<8;k++)
+				{
+					if(!((j ==getX() ) && (k == getY())))
+					{
+						//if(canMoveCheckMate(j, k))
+						if(canMove(j, k))
+						{
+							LegalMoves.add(new Moves(getX(),getY(),j,k,getPoints(j,k)));
+							//System.out.println("rook added" + j + k +" Curr: " + getX() + getY() +  "CurrSize: " + LegalMoves.size());
+			        	}
+					}
+				}
+			}
+
+    	return LegalMoves;
+    }
+	
+	public int getPoints(int destX, int destY)
+    {
+    	Piece piece = this.board.getPiece(destX, destY);
+    	if(piece != null)
+    	{
+    		System.out.println("Class:" + piece.getClass().toString());
+    		if(piece.getClass().toString().equals("class chessgui.pieces.Queen")) //== "class chessgui.pieces.Queen")
+    		{
+    			System.out.println("Point Qween");
+    			return 10;
+    		}
+    		else if(piece.getClass().toString().equals("class chessgui.pieces.Rook"))
+    		{
+    			return 9;
+    		}
+    		else if((piece.getClass().toString().equals("class chessgui.pieces.Bishop")) || (piece.getClass().toString().equals("class chessgui.pieces.Knight")))
+    		{
+    			return 8;
+    		}
+    		else if(piece.getClass().toString().equals("class chessgui.pieces.Pawn"))
+    		{
+    			return 7;
+    		}
+    		
+    	}
+    	return 0;
+    }
 	
 
 
@@ -41,7 +98,7 @@ public class Rook extends Piece {
     	{
     		if (Black_Pieces.get(0).isKing() == true)
     		{
-    			System.out.println("King found");
+    			//System.out.println("King found");
     			if(Black_Pieces.get(0).isCheckmate() == true)
     			{
     				
@@ -82,15 +139,16 @@ public class Rook extends Piece {
         	 	setY(destination_y);
         		if(isKingChecked() == true)
         		{
+        			
         			setX(currPosX);
 	        		setY(currPosY);
-        			System.out.println("false");
+        			System.out.println("Rook king checkedfalse");
         			return false;
         		}
         		setX(currPosX);
         		setY(currPosY);
         		
-    			System.out.println("true");
+    		//	System.out.println("true");
     		
     			hasMoved = true;
     			
@@ -110,14 +168,14 @@ public class Rook extends Piece {
         
     	p = Rook.this.board.getPiece(destination_x, destination_y);
 		
-		if((p == null) || (p.isWhite() != isWhite()) || (p.isBlack() != isBlack()))
+		//if((p == null) || (p.isWhite() != isWhite()) || (p.isBlack() != isBlack()))
     	if ((DestOK(destination_x, destination_y, Rook.this.getX(), Rook.this.getY()) == true))
     	{
     		if(PathOK(destination_x, destination_y, Rook.this.getX(), Rook.this.getY()) == true)
     		{
     			//Lika notað í að tékka á skák, þarf að laga.
    		
-    			System.out.println("true");
+    			//System.out.println("true");
     		
     			hasMoved = true;
     			
