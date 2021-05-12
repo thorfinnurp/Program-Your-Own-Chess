@@ -94,61 +94,27 @@ public class King extends Piece {
         return false;
     }
     
- /*   @Override
+    @Override
     public boolean canMoveCheckMate(int destination_x, int destination_y)
     {	
     	int currPosX = getX();
     	int currPosY = getY();
-    	if(isCheckMate())
-    	{
-    		return false;
-    	}
+
     	diffX = getX() - destination_x;
     	diffY = getY() - destination_y;
     	
     	p = King.this.board.getPiece(destination_x, destination_y);
-    	
-    	if(castle(destination_x, destination_y))
-    	{
-    		
-    		//setX(destination_x);
-    		//setY(destination_y);
-    		if(isChecked() == true)
-    		{
-    			//setX(currPosX);
-        		//setY(currPosY);
-    			return false;
-    		}
-    		//setX(currPosX);
-    		//setY(currPosY);
-    		  		
-    		return true;
-    	}
 		
 		if((p == null) || (p.isWhite() != isWhite()) || (p.isBlack() != isBlack()))
 		{
 	    	if(((diffY < 2) && (diffY > -2)) && ((diffX < 2) && (diffX > -2)))
 	    	{
-	    		if(check(destination_x, destination_y))
-	    		{
-	    			//setX(destination_x);
-	        		//setY(destination_y);
-	        		if(isChecked() == true)
-	        		{
-	        			//setX(currPosX);
-	            		//setY(currPosY);
-	        			return false;
-	        		}
-	        		//setX(currPosX);
-	        		//setY(currPosY);
-	    			hasMoved = true;
-	    			return true;
-	    		}
+	    		return true;
 	    	}
 		}
         
         return false;
-    } */
+    } 
     
     public boolean castle(int destination_x, int destination_y)
     {
@@ -220,7 +186,7 @@ public class King extends Piece {
     				{	
     					if(Rook.hasMoved() == false)
     					{
-    						if(check(4, 7) && check(5, 7) && check(6, 7))
+    						if(check(4, 7) && check(5, 7))
     						{
 	    						Rook.setX(4);
 	    						Rook.setY(7);
@@ -338,8 +304,8 @@ public class King extends Piece {
 	    	{ 
 	    		if(Black_Pieces.get(i).canMoveCheckMate(getX(), getY()) == true)
 	    		{
-	    			newX = White_Pieces.get(i).getX();
-    				newY = White_Pieces.get(i).getY();
+	    			newX = Black_Pieces.get(i).getX();
+    				newY = Black_Pieces.get(i).getY();
     				return newX.toString() + newY.toString();
 	    		}
 	    	}
@@ -399,7 +365,7 @@ public class King extends Piece {
     		}
     		else if(castle(destX,destY))
     		{
-    			return 8;
+    			return 11;
     		}
     		
     	}

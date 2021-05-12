@@ -330,8 +330,8 @@ public class Board extends JComponent {
             	 System.out.println("Active Null");
              }
              
-            // if(Active_Piece != null)
-            // {
+             if(Active_Piece != null)
+             {
 	             if(Active_Piece.canMove(DestX, DestY))
 	             {
 	                 if (clicked_piece != null)
@@ -359,7 +359,7 @@ public class Board extends JComponent {
 	                 Active_Piece = null;
 	                 turnCounter++;
 	             }
-            // }
+             }
         }
         public void movePiece(int d_X, int d_Y, int Clicked_Row, int Clicked_Column, boolean is_whites_turn)
         {

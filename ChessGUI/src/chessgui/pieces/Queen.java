@@ -84,11 +84,9 @@ public class Queen extends Piece {
     	Black_Pieces = board.getBlackPieces();
     	if(isWhite())
     	{
-    		//System.out.println("IsWhite");
-    		if (White_Pieces.get(0).isKing() == true)
+    		//if (White_Pieces.get(0).isKing() == true)
     		{
-    			//System.out.println("King found");
-    			if(White_Pieces.get(0).isCheckmate() == true)
+    			if(White_Pieces.get(0).isChecked() == true)
     			{
     				return true;
     			}
@@ -96,10 +94,9 @@ public class Queen extends Piece {
     	}
     	else
     	{
-    		if (Black_Pieces.get(0).isKing() == true)
+    		//if (Black_Pieces.get(0).isKing() == true)
     		{
-    			//System.out.println("King found");
-    			if(Black_Pieces.get(0).isCheckmate() == true)
+    			if(Black_Pieces.get(0).isChecked() == true)
     			{
     				return true;
     			}
@@ -132,6 +129,29 @@ public class Queen extends Piece {
 	        		setY(destination_y);
 	        		if(isKingChecked() == true)
 	        		{
+	        			if((p != null) &&(p.isWhite() == true))
+	        			{
+	        				if(isWhite())
+		        			{
+			        			if((p != null) &&(p.isBlack() == true))
+			        			{
+				        			if(White_Pieces.get(0).getChecked().equals(String.valueOf(String.valueOf(destination_x) + String.valueOf(destination_y))))
+				        			{
+				        				return true;
+				        			}
+			        			}
+		        			}
+		        			else
+		        			{
+			        			if((p != null) &&(p.isWhite() == true))
+			        			{
+				        			if(Black_Pieces.get(0).getChecked().equals(String.valueOf(String.valueOf(destination_x) + String.valueOf(destination_y))))
+				        			{
+				        				return true;
+				        			}
+			        			}
+		        			}
+	        			}
 	        			setX(currPosX);
 		        		setY(currPosY);
 	        			//System.out.println("false");
@@ -151,6 +171,26 @@ public class Queen extends Piece {
 	        		setY(destination_y);
 	        		if(isKingChecked() == true)
 	        		{
+	        			if(isWhite())
+	        			{
+		        			if((p != null) &&(p.isBlack() == true))
+		        			{
+			        			if(White_Pieces.get(0).getChecked().equals(String.valueOf(String.valueOf(destination_x) + String.valueOf(destination_y))))
+			        			{
+			        				return true;
+			        			}
+		        			}
+	        			}
+	        			else
+	        			{
+		        			if((p != null) &&(p.isWhite() == true))
+		        			{
+			        			if(Black_Pieces.get(0).getChecked().equals(String.valueOf(String.valueOf(destination_x) + String.valueOf(destination_y))))
+			        			{
+			        				return true;
+			        			}
+		        			}
+	        			}
 	        			setX(currPosX);
 		        		setY(currPosY);
 	        			//System.out.println("Qfalse");

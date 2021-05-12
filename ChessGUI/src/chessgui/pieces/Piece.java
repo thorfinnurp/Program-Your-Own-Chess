@@ -117,6 +117,11 @@ public class Piece {
     	return false;
     }
     
+    public boolean isChecked()
+    {
+    	return false;
+    }
+    
     public boolean canMove(int destination_x, int destination_y)
     {
         return false;

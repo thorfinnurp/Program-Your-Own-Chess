@@ -30,11 +30,9 @@ public class Pawn extends Piece {
 				{
 					if(!((j ==getX() ) && (k == getY())))
 					{
-						//if(canMoveCheckMate(j, k))
 						if(canMove(j, k))
 						{
 							LegalMoves.add(new Moves(getX(),getY(),j,k,getPoints(j,k)));
-						//	System.out.println("Pawn added" + j + k +" Curr: " + getX() + getY() +  "CurrSize: " + LegalMoves.size());
 			        	}
 					}
 				}
@@ -51,7 +49,6 @@ public class Pawn extends Piece {
     		System.out.println("Class:" + piece.getClass().toString());
     		if(piece.getClass().toString().equals("class chessgui.pieces.Queen")) //== "class chessgui.pieces.Queen")
     		{
-    			System.out.println("Point Qween");
     			return 10;
     		}
     		else if(piece.getClass().toString().equals("class chessgui.pieces.Rook"))
@@ -102,26 +99,17 @@ public class Pawn extends Piece {
     	Black_Pieces = board.getBlackPieces();
     	if(isWhite())
     	{
-    		//System.out.println("IsWhite");
-    		if (White_Pieces.get(0).isKing() == true)
-    		{
-    			//System.out.println("King found");
-    			if(White_Pieces.get(0).isCheckmate() == true)
-    			{
-    				return true;
-    			}
-    		} 	
+			if(White_Pieces.get(0).isChecked() == true)
+			{
+				return true;
+			}
     	}
     	else
     	{
-    		if (Black_Pieces.get(0).isKing() == true)
-    		{
-    			//System.out.println("King found");
-    			if(Black_Pieces.get(0).isCheckmate() == true)
-    			{
-    				return true;
-    			}
-    		}	
+			if(Black_Pieces.get(0).isChecked() == true)
+			{
+				return true;
+			}
     	}
     	return false;
     }
@@ -129,30 +117,20 @@ public class Pawn extends Piece {
     
     @Override
     public boolean canMove(int destination_x, int destination_y)
-    {
-        // Remember: A pawn may only move towards the oponent's side of the board.
-        // If the pawn has not moved yet in the game, for its first move it can 
-        // move two spaces forward. Otherwise, it may only move one space. 
-        // When not attacking it may only move straight ahead.
-        // When attacking it may only move space diagonally forward
-
-                // WRITE CODE HERE
-    	
+    {	
     	currPosY = getY();
     	currPosX = getX();
     	p = Pawn.this.board.getPiece(destination_x, destination_y);
     
-    	
     	if(p == null) 
     	{
     		if(getXValue() == destination_x)
     		{
 		    	if(Pawn.this.isWhite() == true)
 		    	{
-		    	
+		    		//White straight up 1 or 2
 		    		if((destination_y == getYValue() + 1) || ((destination_y == getYValue() + 2) && (getYValue() == 1)))
 		    		{
-		    			
 		    			if ((destination_y == getYValue() + 2) && (getYValue() == 1))
 		    			{
 		    				if(Pawn.this.board.getPiece(destination_x, destination_y - 1) != null)
@@ -162,26 +140,12 @@ public class Pawn extends Piece {
 		    			}
 		    			
 		    			//System.out.println("white True!"); 
-		    			setX(destination_x);
-		        		setY(destination_y);
-		        		if(isKingChecked() == true)
-		        		{
-		        			setX(currPosX);
-			        		setY(currPosY);
-		        		//	System.out.println("false");
-		        			return false;
-		        		}
-		        		setX(currPosX);
-		        		setY(currPosY);
-		        		
-		    			//System.out.println("true");
-		        		createQueen(destination_x, destination_y);
+		    			return checkWhiteCheck(destination_x, destination_y);
 		    			
-		        		return true;
 		    		}
 		    	}
 		    	else {
-		    		
+		    		//Black Straight up 1 or 2
 		    		if((destination_y == getYValue() - 1) || ((destination_y == getYValue() - 2) && (getYValue() == 6)))
 		    		{
 		    			
@@ -192,87 +156,83 @@ public class Pawn extends Piece {
 		    					return false;
 		    				}
 		    			}
-		    			
-		    			
-		    			
-		    			//System.out.println("Black True!"); 
-		    			setX(destination_x);
-		        		setY(destination_y);
-		        		if(isKingChecked() == true)
-		        		{
-		        			setX(currPosX);
-			        		setY(currPosY);
-		        			//System.out.println("false");
-		        			return false;
-		        		}
-		        		setX(currPosX);
-		        		setY(currPosY);
-		        		
-		    			//System.out.println("true");
-		        		createQueen(destination_x, destination_y);
-		        		return true;
+		    			return checkBlackCheck(destination_x, destination_y);
 		    		}
-		    		
 		    	}
     		}
     	}
     	if(Pawn.this.isWhite() == true)
     	{
+    		//White attack left/right
     		if((destination_y == getYValue() + 1) && ((destination_x == getXValue() + 1) || (destination_x == getXValue()-1)) && (p!= null))
     		{
-    			
-    			if(p.isBlack() == Pawn.this.isWhite())
+    			if(p.isBlack() == true)
     	    	{
-    	    		//System.out.println("W - Licence to Kill!");
-    				setX(destination_x);
-	        		setY(destination_y);
-	        		if(isKingChecked() == true)
-	        		{
-	        			setX(currPosX);
-		        		setY(currPosY);
-	        			//System.out.println("false");
-	        			return false;
-	        		}
-	        		setX(currPosX);
-	        		setY(currPosY);
-	        		
-	    			//System.out.println("true");
-	        		createQueen(destination_x, destination_y);
-    	    		return true;
+    	    		return checkWhiteCheck(destination_x, destination_y);
     	    	}
     		}
     	}
     	else
     	{
+    		//Black attack left/right
     		if((destination_y == getYValue() - 1) && ((destination_x == getXValue() + 1) || (destination_x == getXValue()-1)) && (p!= null))
     		{
-    			if(p.isBlack() == Pawn.this.isWhite())
+    			if(p.isBlack() == false)
     	    	{
-    	    		//System.out.println("B - Licence to Kill!");
-    				setX(destination_x);
-	        		setY(destination_y);
-	        		if(isKingChecked() == true)
-	        		{
-	        			setX(currPosX);
-		        		setY(currPosY);
-	        			//System.out.println("false");
-	        			return false;
-	        		}
-	        		setX(currPosX);
-	        		setY(currPosY);
-	        		
-	    			//System.out.println("true");
-	        		createQueen(destination_x, destination_y);
-    	    		return true;
+    				return checkBlackCheck(destination_x, destination_y);
     	    	}	
     		}	
     	}
-    	/*if((Pawn.this.isWhite()) & (destination_y == getYValue()+1)) {
-    		
-    		System.out.println("True"); 
-    		return true;
-    	}*/
         return false;
+    }
+    
+    public boolean checkWhiteCheck(int destination_x, int destination_y)
+    {
+    	setX(destination_x);
+		setY(destination_y);
+		if(isKingChecked() == true)
+		{
+			if((p != null) && (p.isWhite() == true))
+			{
+    			if(White_Pieces.get(0).getChecked().equals(String.valueOf(String.valueOf(destination_x) + String.valueOf(destination_y))))
+    			{
+    				return true;
+    			}
+			}
+			setX(currPosX);
+    		setY(currPosY);
+			return false;
+		}
+		setX(currPosX);
+		setY(currPosY);
+		
+		createQueen(destination_x, destination_y);
+		return true;
+    }
+    
+    
+    public boolean checkBlackCheck(int destination_x, int destination_y)
+    {
+    	setX(destination_x);
+		setY(destination_y);
+		if(isKingChecked() == true)
+		{
+			if((p != null) && (p.isWhite() == true))
+			{
+    			if(Black_Pieces.get(0).getChecked().equals(String.valueOf(String.valueOf(destination_x) + String.valueOf(destination_y))))
+    			{
+    				return true;
+    			}
+			}
+			setX(currPosX);
+    		setY(currPosY);
+			return false;
+		}
+		setX(currPosX);
+		setY(currPosY);
+		
+		createQueen(destination_x, destination_y);
+		return true;
     }
     
     public void createQueen(int destX, int destY)
@@ -286,7 +246,6 @@ public class Pawn extends Piece {
     		{
     			White_Pieces.add(new Queen(destX,destY,true,"Queen.png",this.board));
     			White_Pieces.remove(this);
-    			
     		}
     	}
     	else
@@ -295,79 +254,32 @@ public class Pawn extends Piece {
     		{
     			Black_Pieces.add(new Queen(destX,destY,false,"Queen.png",this.board));
     			Black_Pieces.remove(this);
-    		
     		}
     	}
- 
 	}
     
     @Override
     public boolean canMoveCheckMate(int destination_x, int destination_y)
     {
-        // Remember: A pawn may only move towards the oponent's side of the board.
-        // If the pawn has not moved yet in the game, for its first move it can 
-        // move two spaces forward. Otherwise, it may only move one space. 
-        // When not attacking it may only move straight ahead.
-        // When attacking it may only move space diagonally forward
-
-                // WRITE CODE HERE
-    	
     	currPosY = getY();
     	currPosX = getX();
     	p = Pawn.this.board.getPiece(destination_x, destination_y);
     
-    	
-    	//Ekki skák ef peð fer beint
-    	//if(p == null) 
-    	/*{
-    		if(getXValue() == destination_x)
-    		{
-		    	if(Pawn.this.isWhite() == true)
-		    	{
-		    	
-		    		if((destination_y == getYValue() + 1) || (destination_y == getYValue() + 2))
-		    		{
-		        		return true;
-		    		}
-		    	}
-		    	else {
-		    		
-		    		if((destination_y == getYValue() - 1) || (destination_y == getYValue() - 2))
-		    		{
-		    			//System.out.println("Black True!"); 
-		        		return true;
-		    		}
-		    		
-		    	}
-    		}
-    	}*/
     	if(Pawn.this.isWhite() == true)
     	{
     		if((destination_y == getYValue() + 1) && ((destination_x == getXValue() + 1) || (destination_x == getXValue()-1)) && (p!= null))
     		{
-    			
-    			//if(p.isBlack() == Pawn.this.isWhite())
-    	    	{
-    	    		//System.out.println("W - Licence to Kill!");
-    	    		return true;
-    	    	}
+    	    	return true;
     		}
     	}
     	else
     	{
     		if((destination_y == getYValue() - 1) && ((destination_x == getXValue() + 1) || (destination_x == getXValue()-1)) && (p!= null))
     		{
-    			//if(p.isBlack() == Pawn.this.isWhite())
-    	    	{
-    	    		return true;
-    	    	}	
+    	    	return true;
     		}	
     	}
-    	/*if((Pawn.this.isWhite()) & (destination_y == getYValue()+1)) {
-    		
-    		System.out.println("True"); 
-    		return true;
-    	}*/
+    	
         return false;
     }
 }

@@ -84,11 +84,9 @@ public class Rook extends Piece {
     	Black_Pieces = board.getBlackPieces();
     	if(isWhite())
     	{
-    		//System.out.println("IsWhite");
-    		if (White_Pieces.get(0).isKing() == true)
+    		//if (White_Pieces.get(0).isKing() == true)
     		{
-    			//System.out.println("King found");
-    			if(White_Pieces.get(0).isCheckmate() == true)
+    			if(White_Pieces.get(0).isChecked() == true)
     			{
     				return true;
     			}
@@ -96,12 +94,10 @@ public class Rook extends Piece {
     	}
     	else
     	{
-    		if (Black_Pieces.get(0).isKing() == true)
+    		//if (Black_Pieces.get(0).isKing() == true)
     		{
-    			//System.out.println("King found");
-    			if(Black_Pieces.get(0).isCheckmate() == true)
+    			if(Black_Pieces.get(0).isChecked() == true)
     			{
-    				
     				return true;
     			}
     		}	
