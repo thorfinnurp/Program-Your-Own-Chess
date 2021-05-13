@@ -97,8 +97,6 @@ public class King extends Piece {
     @Override
     public boolean canMoveCheckMate(int destination_x, int destination_y)
     {	
-    	int currPosX = getX();
-    	int currPosY = getY();
 
     	diffX = getX() - destination_x;
     	diffY = getY() - destination_y;
@@ -125,7 +123,6 @@ public class King extends Piece {
     			if((destination_x == 1) && (destination_y == 0))
     			{    				
     				Rook = King.this.board.getPiece(0, 0);
-    				
     				if((Rook != null) && (King.this.board.getPiece(1, 0) == null) &&(King.this.board.getPiece(2, 0 )) == null )
     				{    					
     					if(Rook.hasMoved() == false)
@@ -148,7 +145,7 @@ public class King extends Piece {
     					if(Rook.hasMoved() == false)
     					{
     						//Check for checks from opponents in castle path
-    						if(check(4, 0) && check(5, 0) && check(6, 0))
+    						if(check(4, 0) && check(5, 0))
     						{
 	    						Rook.setX(4);
 	    						Rook.setY(0);

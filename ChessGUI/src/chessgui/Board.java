@@ -345,17 +345,19 @@ public class Board extends JComponent {
 	                         Black_Pieces.remove(clicked_piece);
 	                     }
 	                 }
-	                 // do move
-	                 Active_Piece.setX(DestX);
-	                 Active_Piece.setY(DestY);
-	                 
-	                 // if piece is a pawn set has_moved to true
-	                 if (Active_Piece.getClass().equals(Pawn.class))
+	                 if(Active_Piece != null)
 	                 {
-	                     Pawn castedPawn = (Pawn)(Active_Piece);
-	                     castedPawn.setHasMoved(true);
+		                 // do move
+		                 Active_Piece.setX(DestX);
+		                 Active_Piece.setY(DestY);
+		                 
+		                 // if piece is a pawn set has_moved to true
+		                 if (Active_Piece.getClass().equals(Pawn.class))
+		                 {
+		                     Pawn castedPawn = (Pawn)(Active_Piece);
+		                     castedPawn.setHasMoved(true);
+		                 }
 	                 }
-	 
 	                 Active_Piece = null;
 	                 turnCounter++;
 	             }
